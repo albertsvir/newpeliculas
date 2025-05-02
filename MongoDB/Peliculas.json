@@ -1,0 +1,82 @@
+[
+    {
+        "Titulo": "Titanic",
+        "Actores": "Leonardo DiCaprio",
+        "Anio": 1997,
+        "Categoria": "Romance, Drama",
+        "Sinopsis": "Una historia de amor épica ambientada en el desafortunado viaje inaugural del RMS Titanic.",
+        "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqJPTUUxybY2fILEB6wzW_bZN8-OwY5FIvLA&s"
+    },
+    {
+        "Titulo": "El Padrino",
+        "Actores": "Marlon Brando",
+        "Anio": 1972,
+        "Categoria": "Crimen, Drama",
+        "Sinopsis": "La historia de la familia mafiosa Corleone y la transición de poder entre generaciones.",
+        "Imagen": "https://es.web.img3.acsta.net/pictures/18/06/12/12/12/0117051.jpg?coixp=49&coiyp=27"
+    },
+    {
+        "Titulo": "Avatar",
+        "Actores": "Sam Worthington",
+         "Anio": 2009,
+        "Categoria": "Ciencia ficción, Aventura",
+        "Sinopsis": "Un veterano de guerra se encuentra en un planeta alienígena y se ve involucrado en un conflicto épico.",
+        "Imagen": "https://es.web.img3.acsta.net/medias/nmedia/18/92/13/82/20182449.jpg"
+    },
+     {
+        "Titulo": "Interestelar",
+        "Actores": "Matthew McConaughey",
+         "Anio": 2014,
+        "Categoria": "Ciencia ficción, Aventura",
+        "Sinopsis": "Un grupo de astronautas viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad.",
+        "Imagen": "https://pics.filmaffinity.com/Interstellar-366875261-large.jpg"
+    },
+     {
+        "Titulo": "El Señor de los Anillos: La Comunidad del Anillo",
+        "Actores": "Elijah Wood",
+         "Anio": 2001,
+        "Categoria": "Fantasía, Aventura",
+        "Sinopsis": "Un joven hobbit emprende un peligroso viaje para destruir un anillo que podría condenar al mundo.",
+        "Imagen": "https://es.web.img3.acsta.net/medias/nmedia/18/89/67/45/20061512.jpg"
+    },
+     {
+       "Titulo": "Matrix",
+        "Actores": "Keanu Reeves",
+         "Anio": 1999,
+        "Categoria": "Ciencia ficción, Acción",
+        "Sinopsis": "Un programador descubre que el mundo en el que vive es una simulación creada por máquinas.",
+        "Imagen": "https://static.wikia.nocookie.net/cine/images/7/7a/Matrix.jpg/revision/latest?cb=20121129154330"
+    },
+     {
+        "Titulo": "Gladiador",
+        "Actores": "Russell Crowe",
+         "Anio": 2000,
+        "Categoria": "Acción, Drama",
+        "Sinopsis": "Un general romano traicionado busca venganza contra el emperador corrupto que asesinó a su familia.",
+        "Imagen": "https://biblioteca.acropolis.org/wp-content/uploads/2015/03/Gladiator.jpg"
+    },
+     {
+       "Titulo": "Joker",
+        "Actores": "Joaquin Phoenix",
+         "Anio": 2019,
+        "Categoria": "Drama, Crimen",
+        "Sinopsis": "Un hombre marginado y con problemas mentales se transforma en el infame villano Joker.",
+        "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrby9XhWVF0iod6GnwdV0QV1APB3rTl0EXqg&s"
+    },
+     {
+        "Titulo": "El caballero de la noche",
+        "Actores": "Christian Bale",
+         "Anio": 2008,
+        "Categoria": "Acción, Crimen",
+        "Sinopsis": "Batman enfrenta su mayor desafío cuando el Joker amenaza con sumir a Gotham en el caos.",
+        "Imagen": "https://aztlan.fciencias.unam.mx/pensadero/posts-images/2012/08/the-dark-knight-rises.jpg"
+    },
+     {
+       "Titulo": "Forrest Gump",
+        "Actores": "Tom Hanks",
+         "Anio": 1994,
+        "Categoria": "Drama, Romance",
+        "Sinopsis": "La vida de un hombre con un coeficiente intelectual bajo, quien sin quererlo, se convierte en parte de eventos históricos clave.",
+        "Imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIk9saNkNuE2JGby8n_QTfD8lT7yJkAg4HeQ&s"
+    }
+]

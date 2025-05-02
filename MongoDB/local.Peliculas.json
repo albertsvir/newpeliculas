@@ -1,0 +1,140 @@
+[{
+  "_id": {
+    "$oid": "67eac4a2a9e039cc562d6f8e"
+  },
+  "titulo": "Titanic",
+  "actor": "Leonardo DiCaprio",
+  "anio": 1997,
+  "categoria": [
+    "Romance",
+    "Drama"
+  ],
+  "sinopsis": "Una historia de amor épica ambientada en el desafortunado viaje inaugural del RMS Titanic.",
+  "imagen_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqJPTUUxybY2fILEB6wzW_bZN8-OwY5FIvLA&s"
+},
+{
+  "_id": {
+    "$oid": "67eac4a2a9e039cc562d6f8f"
+  },
+  "titulo": "El Padrino",
+  "actor": "Marlon Brando",
+  "anio": 1972,
+  "categoria": [
+    "Crimen",
+    "Drama"
+  ],
+  "sinopsis": "La historia de la familia mafiosa Corleone y la transición de poder entre generaciones.",
+  "imagen_url": "https://es.web.img3.acsta.net/pictures/18/06/12/12/12/0117051.jpg?coixp=49&coiyp=27"
+},
+{
+  "_id": {
+    "$oid": "67eac4a2a9e039cc562d6f90"
+  },
+  "titulo": "Avatar",
+  "actor": "Sam Worthington",
+  "anio": 2009,
+  "categoria": [
+    "Ciencia ficción",
+    "Aventura"
+  ],
+  "sinopsis": "Un veterano de guerra se encuentra en un planeta alienígena y se ve involucrado en un conflicto épico.",
+  "imagen_url": "https://es.web.img3.acsta.net/medias/nmedia/18/92/13/82/20182449.jpg"
+},
+{
+  "_id": {
+    "$oid": "67eac4a2a9e039cc562d6f91"
+  },
+  "titulo": "Interestelar",
+  "actor": "Matthew McConaughey",
+  "anio": 2014,
+  "categoria": [
+    "Ciencia ficción",
+    "Aventura"
+  ],
+  "sinopsis": "Un grupo de astronautas viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad.",
+  "imagen_url": "https://pics.filmaffinity.com/Interstellar-366875261-large.jpg"
+},
+{
+  "_id": {
+    "$oid": "67eac4a2a9e039cc562d6f92"
+  },
+  "titulo": "El Señor de los Anillos: La Comunidad del Anillo",
+  "actor": "Elijah Wood",
+  "anio": 2001,
+  "categoria": [
+    "Fantasía",
+    "Aventura"
+  ],
+  "sinopsis": "Un joven hobbit emprende un peligroso viaje para destruir un anillo que podría condenar al mundo.",
+  "imagen_url": "https://es.web.img3.acsta.net/medias/nmedia/18/89/67/45/20061512.jpg"
+},
+{
+  "_id": {
+    "$oid": "67eac4a2a9e039cc562d6f93"
+  },
+  "titulo": "Matrix",
+  "actor": "Keanu Reeves",
+  "anio": 1999,
+  "categoria": [
+    "Ciencia ficción",
+    "Acción"
+  ],
+  "sinopsis": "Un programador descubre que el mundo en el que vive es una simulación creada por máquinas.",
+  "imagen_url": "https://static.wikia.nocookie.net/cine/images/7/7a/Matrix.jpg/revision/latest?cb=20121129154330"
+},
+{
+  "_id": {
+    "$oid": "67eac4a2a9e039cc562d6f94"
+  },
+  "titulo": "Gladiador",
+  "actor": "Russell Crowe",
+  "anio": 2000,
+  "categoria": [
+    "Acción",
+    "Drama"
+  ],
+  "sinopsis": "Un general romano traicionado busca venganza contra el emperador corrupto que asesinó a su familia.",
+  "imagen_url": "https://biblioteca.acropolis.org/wp-content/uploads/2015/03/Gladiator.jpg"
+},
+{
+  "_id": {
+    "$oid": "67eac4a2a9e039cc562d6f95"
+  },
+  "titulo": "Joker",
+  "actor": "Joaquin Phoenix",
+  "anio": 2019,
+  "categoria": [
+    "Drama",
+    "Crimen"
+  ],
+  "sinopsis": "Un hombre marginado y con problemas mentales se transforma en el infame villano Joker.",
+  "imagen_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrby9XhWVF0iod6GnwdV0QV1APB3rTl0EXqg&s"
+},
+{
+  "_id": {
+    "$oid": "67eac4a2a9e039cc562d6f96"
+  },
+  "titulo": "El caballero de la noche",
+  "actor": "Christian Bale",
+  "anio": 2008,
+  "categoria": [
+    "Acción",
+    "Crimen"
+  ],
+  "sinopsis": "Batman enfrenta su mayor desafío cuando el Joker amenaza con sumir a Gotham en el caos.",
+  "imagen_url": "https://aztlan.fciencias.unam.mx/pensadero/posts-images/2012/08/the-dark-knight-rises.jpg"
+},
+{
+  "_id": {
+    "$oid": "67eac4a2a9e039cc562d6f97"
+  },
+  "titulo": "Forrest Gump",
+  "actor": "Tom Hanks",
+  "anio": 1994,
+  "categoria": [
+    "Drama",
+    "Romance"
+  ],
+  "sinopsis": "La vida de un hombre con un coeficiente intelectual bajo, quien sin quererlo, se convierte en parte de eventos históricos clave.",
+  "imagen_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIk9saNkNuE2JGby8n_QTfD8lT7yJkAg4HeQ&s"
+}]
