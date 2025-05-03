@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const uri = 'mongodb://localhost:27017/peliculas'; // Cambia esto si tienes usuario/contraseña
+const uri = 'mongodb://localhost:27017/bdpeliculas'; // Cambia esto si tienes usuario/contraseña
 
 mongoose.connect(uri, {
   useNewUrlParser: true,

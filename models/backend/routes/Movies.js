@@ -2,24 +2,31 @@ const express = require('express');
 const router = express.Router();
 const Movie = require('../Movie'); // Modelo de película
 
-router.post('/', async (req, res) => {
-    try {
-        const Movie = new Movie(req.body);
-        await Movie.save();
-        res.status(201).json(Movie);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
 // Obtener todas las películas
-router.get('/', async (req, res) => {
+router.get('/movies', async (req, res) => {
     try {
-        const Movies = await Movie.find();
-        res.json(Movies);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+      const movies = await Movie.find(); 
+      console.log(movies); // Verifica que las películas se obtienen correctamente
+      res.json(movies);
+    } catch (err) {
+      res.status(500).json({ message: 'Error al obtener películas' });
     }
-});
+  });
+
+  router.post('/movies', async (req, res) => {
+    try {
+      console.log('req.body =', req.body);
+      // Asegúrate de que aquí llegue un objeto con tus campos:
+      // { Titulo, Actores, Anio, Categoria, Sinopsis, Imagen }
+      const nueva = await Movie.create(req.body);
+      console.log('Película agregada:', nueva);
+      res.status(201).json(nueva);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  });
+
+  
+    
 
 module.exports = router;
