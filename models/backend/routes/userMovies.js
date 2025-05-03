@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../User'); // Modelo de usuario
-const Movie = require('../Movie'); // Modelo de película
+const {getModelUser } = require('../User')
+const {connectDB} = require('../../../confy/conf'); // Asegúrate de que la ruta sea correcta
 
 // Agregar película a lista del usuario
 router.post('/:userId/add', async (req, res) => {
@@ -9,6 +9,10 @@ router.post('/:userId/add', async (req, res) => {
     const { userId } = req.params;
 
     try {
+
+        const conn = await connectDB(); // Conectar a la base de datos
+        const User = await getModelUser(conn); // Asegúrate de que esto esté correcto
+
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
@@ -26,6 +30,10 @@ router.get('/:userId/list', async (req, res) => {
     const { userId } = req.params;
 
     try {
+
+        const conn = await connectDB(); // Conectar a la base de datos
+        const User = await getModelUser(conn); // Asegúrate de que esto esté correcto
+
         const user = await User.findById(userId).populate('listaPeliculas');
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 

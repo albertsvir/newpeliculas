@@ -1,7 +1,7 @@
 
 const getModel = async(conn) => {
 
-  const movieSchema = new mongoose.Schema({
+  const movieSchema = new conn.Schema({
     Titulo: String,
     Actores: String,
     Anio: Number,
