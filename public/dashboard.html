@@ -133,7 +133,12 @@
     ${movie.director ? `<p class="movie-director">Director: ${movie.director}</p>` : ''}
   </div>
 `;
-    
+        movieEl.addEventListener('click', () => {
+          window.location.href = `http://localhost:3000/api/movies/${movie.id}`;
+        });
+        movieEl.addEventListener('mouseover', () => {
+          movieEl.classList.add('hovered');
+        });
         
         fragment.appendChild(movieEl);
       });
@@ -293,7 +298,18 @@
     alert('Hubo un problema al buscar las películas. Por favor, intente nuevamente.');
   }
 }
+const loginBtn = document.getElementById('loginBtn');
+  const registerBtn = document.getElementById('registerBtn');
 
+  // Redirigir a login.html cuando se hace clic en el botón de Iniciar sesión
+  loginBtn.addEventListener('click', () => {
+    window.location.href = 'login.html'; // Redirige a login.html
+  });
+
+  // Redirigir a register.html cuando se hace clic en el botón de Registrarse
+  registerBtn.addEventListener('click', () => {
+    window.location.href = 'register.html'; // Redirige a register.html
+  });
   </script>
 </body>
 </html>

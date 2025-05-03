@@ -1,33 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register</title>
   <style>
+    :root {
+      --primary-color: #2196f3;
+      --secondary-color: #ff9800;
+      --background-color: #0d1117;
+      --card-color: #161b22;
+      --text-color: #e6edf3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: url('https://c4.wallpaperflare.com/wallpaper/110/1012/37/photography-landscape-mountains-sunlight-wallpaper-preview.jpg') no-repeat center center fixed;
-      background-size: cover;
+      background-color: var(--background-color);
+      color: var(--text-color);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
-      color: white;
+      font-size: 16px;
     }
 
     .form-container {
-      background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro */
+      background-color: var(--card-color);
       padding: 30px;
       border-radius: 8px;
       width: 300px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     }
 
     .form-container h2 {
       text-align: center;
       margin-bottom: 20px;
+      font-size: 1.5rem;
+      color: var(--primary-color);
     }
 
     .form-container input {
@@ -36,8 +51,8 @@
       margin-bottom: 15px;
       border: none;
       border-radius: 5px;
-      background-color: rgba(255, 255, 255, 0.3);
-      color: white;
+      background-color: #21262d;
+      color: var(--text-color);
       font-size: 1rem;
     }
 
@@ -45,7 +60,7 @@
       width: 100%;
       padding: 12px;
       border: none;
-      background-color: #007bff;
+      background-color: var(--primary-color);
       color: white;
       border-radius: 5px;
       cursor: pointer;
@@ -54,7 +69,7 @@
     }
 
     .form-container button:hover {
-      background-color: #0056b3;
+      background-color: #1976d2;
     }
 
     .form-container .redirect {
@@ -63,14 +78,29 @@
     }
 
     .form-container .redirect a {
-      color: #007bff;
+      color: var(--primary-color);
       text-decoration: none;
     }
 
     .form-container .redirect a:hover {
       text-decoration: underline;
     }
+
+    #mensaje {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .error {
+      color: #f44336; /* Red for errors */
+    }
+
+    .success {
+      color: #4caf50; /* Green for success */
+    }
   </style>
+
 </head>
 <body>
 
@@ -92,7 +122,7 @@
       const password = document.getElementById('reg-password').value;
       if (username && email && password) {
         alert("Registration Successful");
-        // Aquí puedes agregar la lógica para enviar los datos al servidor o redirigir
+        // Aquí puedes agregar la lógica para enviar datos al servidor o redirigir
       } else {
         alert("Please fill out all fields.");
       }

@@ -1,21 +1,27 @@
 
-const getModel = async(conn) => {
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-  const movieSchema = new conn.Schema({
-    Titulo: String,
-    Actores: String,
-    Anio: Number,
-    Categoria: String,
-    Sinopsis: String,
-    Imagen: String
-  }, { collection: 'movies' }); // <- aquí va "movie"
+// Define el esquema para las películas
+const movieSchema = new Schema({
+  id: { type: String, required: true, unique: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  title: { type: String, required: true },
+  year: { type: Number, required: true },
+  director: { type: String, required: true },
+  actors: { type: [String], required: true },
+  imagenurll: { type: String, required: true },
+  fechaCreacion: { type: Date, default: Date.now },
+}, {
+ 
+  timestamps: true,
+  versionKey: false 
+});
 
-  return conn.model('movie', movieSchema);
 
-}
 
-module.exports = {
-  
-  getModel
 
-};
+// Creamos el modelo una sola vez y lo exportamos directamente
+const Movie = mongoose.model('Movie', movieSchema);
+
+module.exports = Movie;

@@ -1,33 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
+</head>
+<body>
+  <h2>Iniciar sesión</h2>
+
+  <!-- FORMULARIO SIN onclick -->
+  <form id="loginForm">
+    <input type="text" id="username" placeholder="Usuario" required><br>
+    <input type="password" id="password" placeholder="Contraseña" required><br>
+    <!-- SOLO type="submit", sin onclick -->
+    <button type="submit">Entrar</button>
+  </form>
   <style>
+    :root {
+      --primary-color: #2196f3;
+      --secondary-color: #ff9800;
+      --background-color: #0d1117;
+      --card-color: #161b22;
+      --text-color: #e6edf3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: url('https://c4.wallpaperflare.com/wallpaper/110/1012/37/photography-landscape-mountains-sunlight-wallpaper-preview.jpg') no-repeat center center fixed;
-      background-size: cover;
+      background-color: var(--background-color);
+      color: var(--text-color);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
-      color: white;
+      font-size: 16px;
     }
 
     .form-container {
-      background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro */
+      background-color: var(--card-color);
       padding: 30px;
       border-radius: 8px;
       width: 300px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     }
 
     .form-container h2 {
       text-align: center;
       margin-bottom: 20px;
+      font-size: 1.5rem;
+      color: var(--primary-color);
     }
 
     .form-container input {
@@ -36,8 +61,8 @@
       margin-bottom: 15px;
       border: none;
       border-radius: 5px;
-      background-color: rgba(255, 255, 255, 0.3);
-      color: white;
+      background-color: #21262d;
+      color: var(--text-color);
       font-size: 1rem;
     }
 
@@ -45,7 +70,7 @@
       width: 100%;
       padding: 12px;
       border: none;
-      background-color: #007bff;
+      background-color: var(--primary-color);
       color: white;
       border-radius: 5px;
       cursor: pointer;
@@ -54,7 +79,7 @@
     }
 
     .form-container button:hover {
-      background-color: #0056b3;
+      background-color: #1976d2;
     }
 
     .form-container .redirect {
@@ -63,39 +88,97 @@
     }
 
     .form-container .redirect a {
-      color: #007bff;
+      color: var(--primary-color);
       text-decoration: none;
     }
 
     .form-container .redirect a:hover {
       text-decoration: underline;
     }
-  </style>
-</head>
-<body>
 
-  <div class="form-container">
-    <h2>Login</h2>
-    <input type="text" placeholder="Username" id="username" />
-    <input type="password" placeholder="Password" id="password" />
-    <button onclick="login()">Login</button>
-    <div class="redirect">
-      <p>Don't have an account? <a href="register.html">Register here</a></p>
-    </div>
-  </div>
-
-  <script>
-    function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      if (username && password) {
-        alert("Login Successful");
-        // Aquí puedes agregar la lógica para enviar datos al servidor o redirigir
-      } else {
-        alert("Please fill out all fields.");
-      }
+    #mensaje {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
     }
-  </script>
 
+    .error {
+      color: #f44336; /* Red for errors */
+    }
+
+    .success {
+      color: #4caf50; /* Green for success */
+    }
+  </style>
+  
+  <p id="mensaje"></p>
+  <script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const form = document.getElementById('loginForm');
+    const mensajeElement = document.getElementById('mensaje');
+    const API_URL = 'http://localhost:3000/api/auth/login';
+  
+    function mostrarMensaje(texto, esError = false) {
+      mensajeElement.textContent = texto;
+      mensajeElement.className = esError ? 'error' : 'success';
+    }
+  
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitButton = form.querySelector('button[type="submit"]');
+      if (submitButton) submitButton.disabled = true;
+      
+      mostrarMensaje('Iniciando sesión...');
+      
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      
+      if (!username || !password) {
+        mostrarMensaje('Por favor completa todos los campos', true);
+        if (submitButton) submitButton.disabled = false;
+        return;
+      }
+  
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+        });
+  
+        // Verificar la respuesta del servidor
+        if (!response.ok) {
+          const errorDetails = await response.text();
+          console.error('Detalles del error:', errorDetails);
+          throw new Error(`Respuesta del servidor no fue exitosa: ${response.status} ${response.statusText}`);
+        }
+  
+        const data = await response.json();
+        
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          mostrarMensaje('¡Login exitoso! Redirigiendo...', false);
+          
+          // Redirigir a user.html
+          setTimeout(() => {
+            window.location.href = '/dashboard.html'; // Cambia a la ruta correcta de tu dashboard
+          }, 1500);
+        } else {
+          mostrarMensaje(data.message || 'Credenciales incorrectas', true);
+          if (submitButton) submitButton.disabled = false;
+        }
+      } catch (error) {
+        console.error('Error de conexión:', error);
+        mostrarMensaje('Error al conectar con el servidor. Verifica que el servidor esté corriendo.', true);
+        if (submitButton) submitButton.disabled = false;
+      }
+    });
+  });
+  
+   
+  </script>
+  
 </body>
 </html>

@@ -1,0 +1,228 @@
+   // Variables globales
+   let allMovies = [];
+   let filteredMovies = [];
+   let currentPage = 1;
+   const moviesPerPage = 8;
+   
+   // Referencias DOM
+   const moviesGrid = document.getElementById('moviesGrid');
+   const loader = document.getElementById('loader');
+   const searchInput = document.getElementById('searchInput');
+   const searchButton = document.getElementById('searchButton');
+   const paginationContainer = document.getElementById('pagination');
+   
+   // Cargar películas desde la API
+   async function fetchMovies() {
+     try {
+       // Verificar si ya tenemos películas en el almacenamiento local
+       const cachedMovies = localStorage.getItem('cachedMovies');
+       const cachedTimestamp = localStorage.getItem('cachedTimestamp');
+       const currentTime = new Date().getTime();
+       
+       // Usar caché si existe y tiene menos de 5 minutos
+       if (cachedMovies && cachedTimestamp && (currentTime - parseInt(cachedTimestamp) < 300000)) {
+         allMovies = JSON.parse(cachedMovies);
+         filteredMovies = [...allMovies];
+         renderMovies();
+         renderPagination();
+         return;
+       }
+       
+       loader.style.display = 'flex';
+       const response = await fetch('http://localhost:3000/api/movies/');
+       
+       if (!response.ok) {
+         throw new Error('Error al cargar las películas');
+       }
+       
+       const data = await response.json();
+       allMovies = data.movies;
+       filteredMovies = [...allMovies];
+       
+       // Guardar en caché local
+       localStorage.setItem('cachedMovies', JSON.stringify(allMovies));
+       localStorage.setItem('cachedTimestamp', currentTime.toString());
+       
+       renderMovies();
+       renderPagination();
+     } catch (error) {
+       console.error('Error:', error);
+       moviesGrid.innerHTML = `
+         <div class="no-results">
+           <h2>¡Ups! Algo salió mal</h2>
+           <p>No pudimos cargar las películas. Por favor intenta de nuevo más tarde.</p>
+         </div>
+       `;
+     } finally {
+       loader.style.display = 'none';
+     }
+   }
+   
+   // Renderizar películas con paginación
+   function renderMovies() {
+     if (filteredMovies.length === 0) {
+       moviesGrid.innerHTML = `
+         <div class="no-results">
+           <h2>No se encontraron resultados</h2>
+           <p>Intenta con otra búsqueda</p>
+         </div>
+       `;
+       return;
+     }
+     
+     // Calcular películas para la página actual
+     const startIndex = (currentPage - 1) * moviesPerPage;
+     const endIndex = startIndex + moviesPerPage;
+     const moviesToShow = filteredMovies.slice(startIndex, endIndex);
+     
+     // Usar DocumentFragment para mejor rendimiento
+     const fragment = document.createDocumentFragment();
+     
+     moviesToShow.forEach(movie => {
+       // Crear URL de imagen de película (usando placeholder si no hay URL)
+       // Usar imagen predeterminada estática para evitar solicitudes innecesarias
+       const imageUrl = movie.imagenurll || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450"><rect width="100%" height="100%" fill="%2321262d"/><text x="50%" y="50%" font-family="Arial" font-size="18" fill="%238b949e" text-anchor="middle" dominant-baseline="middle">Sin imagen</text></svg>';
+       
+       const movieEl = document.createElement('div');
+       movieEl.classList.add('movie-card');
+       
+       movieEl.innerHTML = `
+         <div class="movie-poster">
+           <img src="${imageUrl}" alt="${movie.title}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"300\" height=\"450\" viewBox=\"0 0 300 450\"><rect width=\"100%\" height=\"100%\" fill=\"%2321262d\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"18\" fill=\"%238b949e\" text-anchor=\"middle\" dominant-baseline=\"middle\">Sin imagen</text></svg>';">
+         </div>
+         <div class="movie-info">
+           <h3 class="movie-title">${movie.title}</h3>
+           <div class="movie-details">
+             <span class="movie-year">${movie.year || 'Año desconocido'}</span>
+             <span class="movie-genre">${movie.genre || 'Sin género'}</span>
+           </div>
+           ${movie.director ? `<p class="movie-director">Director: ${movie.director}</p>` : ''}
+         </div>
+       `;
+       
+       fragment.appendChild(movieEl);
+     });
+     
+     // Limpiar y añadir todos los elementos de una vez
+     moviesGrid.innerHTML = '';
+     moviesGrid.appendChild(fragment);
+   }
+   
+   // Renderizar paginación
+   function renderPagination() {
+     const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
+     paginationContainer.innerHTML = '';
+     
+     if (totalPages <= 1) return;
+     
+     // Botón anterior
+     const prevButton = document.createElement('button');
+     prevButton.innerHTML = '&laquo; Anterior';
+     prevButton.disabled = currentPage === 1;
+     prevButton.addEventListener('click', () => {
+       if (currentPage > 1) {
+         currentPage--;
+         renderMovies();
+         renderPagination();
+         window.scrollTo({ top: 0, behavior: 'smooth' });
+       }
+     });
+     paginationContainer.appendChild(prevButton);
+     
+     // Botones de página
+     const maxPageButtons = 5;
+     let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+     let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+     
+     if (endPage - startPage + 1 < maxPageButtons) {
+       startPage = Math.max(1, endPage - maxPageButtons + 1);
+     }
+     
+     for (let i = startPage; i <= endPage; i++) {
+       const pageButton = document.createElement('button');
+       pageButton.textContent = i;
+       pageButton.classList.toggle('active', i === currentPage);
+       pageButton.addEventListener('click', () => {
+         currentPage = i;
+         renderMovies();
+         renderPagination();
+         window.scrollTo({ top: 0, behavior: 'smooth' });
+       });
+       paginationContainer.appendChild(pageButton);
+     }
+     
+     // Botón siguiente
+     const nextButton = document.createElement('button');
+     nextButton.innerHTML = 'Siguiente &raquo;';
+     nextButton.disabled = currentPage === totalPages;
+     nextButton.addEventListener('click', () => {
+       if (currentPage < totalPages) {
+         currentPage++;
+         renderMovies();
+         renderPagination();
+         window.scrollTo({ top: 0, behavior: 'smooth' });
+       }
+     });
+     paginationContainer.appendChild(nextButton);
+   }
+   
+   // Buscar películas
+   function searchMovies(query) {
+     query = query.toLowerCase().trim();
+     
+     if (query === '') {
+       filteredMovies = [...allMovies];
+     } else {
+       filteredMovies = allMovies.filter(movie => {
+         return (
+           (movie.title && movie.title.toLowerCase().includes(query)) ||
+           (movie.director && movie.director.toLowerCase().includes(query)) ||
+           (movie.genre && movie.genre.toLowerCase().includes(query)) ||
+           (movie.year && movie.year.toString().includes(query))
+         );
+       });
+     }
+     
+     currentPage = 1;
+     renderMovies();
+     renderPagination();
+   }
+   
+   // Debounce function para evitar múltiples búsquedas
+   function debounce(func, wait) {
+     let timeout;
+     return function(...args) {
+       clearTimeout(timeout);
+       timeout = setTimeout(() => func.apply(this, args), wait);
+     };
+   }
+   
+   // Event listeners
+   searchButton.addEventListener('click', () => {
+     searchMovies(searchInput.value);
+   });
+   
+   // Uso de debounce para la búsqueda mientras se escribe
+   const debouncedSearch = debounce((query) => {
+     searchMovies(query);
+   }, 500);
+   
+   searchInput.addEventListener('input', (e) => {
+     debouncedSearch(e.target.value);
+   });
+   
+   searchInput.addEventListener('keypress', (e) => {
+     if (e.key === 'Enter') {
+       searchMovies(searchInput.value);
+     }
+   });
+   
+
+   let appInitialized = false;
+   
+   document.addEventListener('DOMContentLoaded', () => {
+     if (!appInitialized) {
+       fetchMovies();
+       appInitialized = true;
+     }
+   });
