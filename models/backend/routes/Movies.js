@@ -8,9 +8,11 @@ router.get('/movies', async (req, res) => {
     try {
 
       const conn = await connectDB(); // Conectar a la base de datos
-      
+
       const Movie = await getModel(conn); // Asegúrate de que esto esté correcto
 
+        console.log("CONEXION AQUI",conn);
+        
       const movies = await Movie.find({}); 
       console.log(movies); // Verifica que las películas se obtienen correctamente
       res.json(movies);
