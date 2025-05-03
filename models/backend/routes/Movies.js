@@ -1,10 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require('../Movie'); // Modelo de película
+const {connectDB} = require('../../../confy/conf'); // Asegúrate de que la ruta sea correcta
+const { getModel } = require('../Movie'); // Modelo de película
 
 // Obtener todas las películas
 router.get('/movies', async (req, res) => {
     try {
+
+      const conn = await connectDB(); // Conectar a la base de datos
+      
+      const Movie = await getModel(conn); // Asegúrate de que esto esté correcto
+
       const movies = await Movie.find({}); 
       console.log(movies); // Verifica que las películas se obtienen correctamente
       res.json(movies);
