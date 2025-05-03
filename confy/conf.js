@@ -14,17 +14,6 @@ mongoose.connect(uri, {
   console.error('Error de conexión a MongoDB:', err);
 });
 
-function handleConnect() {
-  mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log('Conectado a MongoDB.');
-  })
-  .catch((err) => {
-    console.error('Error de conexión a MongoDB:', err);
-  });
-}  
 
-module.exports = {handleConnect};
+
+module.exports =mongoose // Exporta la conexión para usarla en otros archivos

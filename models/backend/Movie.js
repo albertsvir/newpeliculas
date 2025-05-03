@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('../../confy/conf');
 
 const movieSchema = new mongoose.Schema({
   Titulo: String,

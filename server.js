@@ -1,11 +1,12 @@
 const express = require('express');
-const mongoose = require('mongoose');
+
 const cors = require('cors');
 const path = require('path');
-const {handleConnect}= require('./confy/conf'); 
+
+
 
 const app = express();
-handleConnect(); // Conectar a MongoDB
+
 
 // Configurar middlewares
 app.use(cors());
