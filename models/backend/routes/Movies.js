@@ -12,7 +12,7 @@ router.get('/movies', async (req, res) => {
       const Movie = await getModel(conn); // Asegúrate de que esto esté correcto
 
         console.log("CONEXION AQUI",conn);
-        
+
       const movies = await Movie.find({}); 
       console.log(movies); // Verifica que las películas se obtienen correctamente
       res.json(movies);
@@ -23,9 +23,11 @@ router.get('/movies', async (req, res) => {
 
   router.post('/movies', async (req, res) => {
     try {
-      console.log('req.body =', req.body);
-      // Asegúrate de que aquí llegue un objeto con tus campos:
-      // { Titulo, Actores, Anio, Categoria, Sinopsis, Imagen }
+ 
+      const conn = await connectDB(); // Conectar a la base de datos
+
+      const Movie = await getModel(conn); // Asegúrate de que esto esté correcto
+
       const nueva = await Movie.create(req.body);
       console.log('Película agregada:', nueva);
       res.status(201).json(nueva);

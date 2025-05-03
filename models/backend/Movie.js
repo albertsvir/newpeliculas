@@ -8,7 +8,7 @@ const getModel = async(conn) => {
     Categoria: String,
     Sinopsis: String,
     Imagen: String
-  }, { collection: 'movie' }); // <- aquí va "movie"
+  }, { collection: 'movies' }); // <- aquí va "movie"
 
   return conn.model('Movie', movieSchema);
 
