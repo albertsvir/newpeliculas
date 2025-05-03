@@ -13,6 +13,8 @@ router.post('/:userId/add', async (req, res) => {
         const conn = await connectDB(); // Conectar a la base de datos
         const User = await getModelUser(conn); // Asegúrate de que esto esté correcto
 
+        console.log("CONEXION AQUI",conn);
+
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
