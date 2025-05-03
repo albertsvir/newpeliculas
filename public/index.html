@@ -1,162 +1,290 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Películas | Usuario</title>
-  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.5.10/css/pico.min.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie List</title>
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
   <style>
+    /* Estilos generales */
     body {
-      background-color: #2f2f54;
-      color: #fff;
+      background: url("https://images.pexels.com/videos/4359166/pexels-photo-4359166.jpeg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: "Arial", sans-serif;
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      padding: 0;
+      color: white;
     }
 
+    /* Fondo semi-transparente sobre la imagen */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* Efecto de capa oscura */
+    }
+
+    /* Estilo para el header */
     header {
-      text-align: center;
-      padding: 2rem 1rem 1rem;
-      border-bottom: 1px solid #101010;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between; /* Para alinear el buscador y los botones a los extremos */
+      align-items: center;
+      padding: 20px 50px;
     }
 
-    header h1 {
-      margin-bottom: 1px;
+    header .search-bar {
+      max-width: 1200px;
+      flex: 1;
+      display: flex;
+      justify-content: center;
     }
 
-
-    nav {
-      margin-top: 1px;
+    header .search-bar input {
+      width: 100%;
+      max-width: 600px;
+      padding: 1rem 1.5rem;
+      background-color: transparent;
+      border: 1px solid white;
+      color: white;
+      font-size: 1rem;
+      border-radius: 9999px;
     }
 
-    nav a {
-      color: #ededed;
-      margin: 1px;
+    /* Estilos para el contenedor de la autenticación (login y registro) */
+    .auth-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
-    .search-bar {
-      margin: auto ;
-      max-width: 300px;
+    .auth-container button {
+      padding: 0.8rem 1.5rem;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      padding: 1rem;
+    .auth-container button:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Formulario de Login y Register */
+    .form-container {
+      display: none;
+      margin-top: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 8px;
+      width: 300px;
+    }
+
+    .form-container.active {
+      display: block;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      outline: none;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .form-container button:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Contenedor de películas */
+    .container {
+      margin-top: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 0 20px;
+    }
+
+    .movie-container {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      max-width: 100%;
     }
 
     .movie-card {
-      background: #2a2a40;
-      border-radius: 12px;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-      display: flow-root;
-      flex-direction: row;
-      justify-content: flex-start;
-      flex-wrap: nowrap;
-      align-content: center;
-      align-items: flex-start;
-      
+      flex: none;
+      width: 200px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 8px;
+      padding: 10px;
+      color: white;
+      transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+      cursor: pointer;
     }
 
-    .movie-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    .movie-card img {
+      width: 100%;
+      border-radius: 8px;
+      transition: transform 0.3s ease-in-out;
     }
 
-    .movie-image {
-      width: 180px;
-      height: 290px;
-      object-fit: cover;
+    .movie-card:hover img {
+      transform: scale(1.1); /* Aumenta la imagen al pasar el cursor */
     }
 
-    .movie-details {
-      padding: 1rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
+    /* Detalles adicionales */
+    .movie-card.details-expanded {
+      width: 350px;
+      transform: scale(1.2); /* Aumenta la carta seleccionada */
+      z-index: 5;
     }
 
-    .movie-details p {
-      font-size: 0.9rem;
-      margin: 0.2rem 0;
-    }
-
-    .hover-description {
+    .movie-card .details {
       display: none;
+      margin-top: 10px;
     }
 
-    .movie-card:hover .hover-description {
+    .movie-card.details-expanded .details {
       display: block;
-      margin-top: 0.5rem;
     }
 
-    button {
-      margin-top: auto;
+    .movie-card h3 {
+      font-size: 1.2rem;
+      margin: 10px 0 5px;
     }
 
-  .grid-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  padding: 1rem;
-}
-
-@media (min-width: 768px) {
-  .grid-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
+    .movie-card p {
+      font-size: 0.9rem;
+      color: gray;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Capa overlay semi-transparente -->
+  <div class="overlay"></div>
+
   <header>
-    <h1> Bienvenido a CinePlus</h1>
-    <nav>
-      <a href="login.html">Ingresar</a>
-      <a href="register.html">Registrarse</a>
-    </nav>
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search for a movie..." />
+    </div>
+    <div class="auth-container">
+      <!-- Aquí se redirige a las páginas de login y registro -->
+      <button id="login-btn" onclick="window.location.href='login.html'">Login</button>
+      <button id="register-btn" onclick="window.location.href='register.html'">Register</button>
+    </div>
   </header>
 
-  <main class="container">
-    <input type="search" id="search" class="search-bar" placeholder="Buscar película...">
+    <!-- Formulario de Login -->
+    <div id="login-form" class="form-container">
+      <input type="text" placeholder="Username" id="login-username" />
+      <input type="password" placeholder="Password" id="login-password" />
+      <button>Login</button>
+    </div>
 
-    <div class="grid-container" id="moviesContainer"></div>
-  </main>
+    <!-- Formulario de Register -->
+    <div id="register-form" class="form-container">
+      <input type="text" placeholder="Username" id="register-username" />
+      <input type="email" placeholder="Email" id="register-email" />
+      <input type="password" placeholder="Password" id="register-password" />
+      <button>Register</button>
+    </div>
+  </header>
+
+  <!-- Contenedor de películas -->
+  <div class="container">
+    <div id="movie-container" class="movie-container"></div>
+  </div>
 
   <script>
+    // Datos de ejemplo (esto debería ser reemplazado con los datos de tu base de datos)
+    const movies = [
+      {
+        titulo: "The Joker",
+        año: 2019,
+        genero: "Crime, Drama",
+        imagen: "https://media.themoviedb.org/t/p/w440_and_h660_face/lDLc513GjEWgYAYzw5G43iVfw6Y.jpg"
+      },
+      {
+        titulo: "The Lion King",
+        año: 2019,
+        genero: "Adventure, Drama",
+        imagen: "https://image.tmdb.org/t/p/original/dzBtMocZuJbjLOXvrl4zGYigDzh.jpg"
+      },
+      {
+        titulo: "Kong: Skull Island",
+        año: 2017,
+        genero: "Action, Adventure",
+        imagen: "https://image.tmdb.org/t/p/original/9kkrw90CAXe3WriqWIg6VGbcPPv.jpg"
+      },
+      {
+        titulo: "Bird Box",
+        año: 2018,
+        genero: "Horror, Mystery",
+        imagen: "https://media.themoviedb.org/t/p/w440_and_h660_face/7eOQpN3j6nXyaUYmocGq3zptOc7.jpg"
+      }
+    ];
 
-    const container = document.getElementById('moviesContainer');
-    const searchInput = document.getElementById('search');
+    const container = document.getElementById("movie-container");
+    const searchInput = document.getElementById("search-input");
 
-    function renderMovies(data) {
-      container.innerHTML = '';
-      data.forEach(movie => {
-        container.innerHTML += `
-          <article class="movie-card" >
-            <img src="${movie.Imagen}" class="movie-image" alt="${movie.Titulo}" />
-            <div class="movie-details">
-              <h4>${movie.Titulo} (${movie.Anio})</h4>
-              <p><strong>Actores:</strong> ${movie.Actores}</p>
-              <p><strong>Categoría:</strong> ${movie.Categoria}</p>
-              <p class="hover-description"><strong>Sinopsis:</strong> ${movie.Sinopsis}</p>
-              <button onclick="addToList('${movie._id}')">Agregar a mi lista</button>
-            </div>
-          </article>`;
+    function renderMovies(movies) {
+      container.innerHTML = ""; // Limpia el contenedor
+
+      movies.forEach(movie => {
+        const card = document.createElement("div");
+        card.classList.add("movie-card");
+
+        card.innerHTML = `
+          <img src="${movie.imagen}" alt="${movie.titulo} poster" />
+          <h3>${movie.titulo}</h3>
+          <p>${movie.año} • ${movie.genero}</p>
+        `;
+
+        container.appendChild(card);
       });
     }
 
-    function addToList(id) {
-      alert("Película añadida a tu lista: " + id);
-    }
+    // Inicializar el renderizado con todas las películas
+    renderMovies(movies);
 
-    searchInput.addEventListener('input', () => {
-      const filtered = movies.filter(m => m.Titulo.toLowerCase().includes(searchInput.value.toLowerCase()));
+    // Filtro de búsqueda
+    searchInput.addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase();
+      const filtered = movies.filter(movie =>
+        movie.titulo.toLowerCase().includes(query) ||
+        movie.genero.toLowerCase().includes(query)
+      );
       renderMovies(filtered);
     });
-
-    renderMovies(movies);
   </script>
+
 </body>
 </html>

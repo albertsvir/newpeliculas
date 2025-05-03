@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../User'); // Modelo de usuario
+const {connectDB} = require('../../../confy/conf'); // Asegúrate de que la ruta sea correcta
+
 
 // Registro de usuario
 router.post('/register', async (req, res) => {

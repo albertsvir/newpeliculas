@@ -10,7 +10,7 @@ const getModel = async(conn) => {
     Imagen: String
   }, { collection: 'movies' }); // <- aquí va "movie"
 
-  return conn.model('Movie', movieSchema);
+  return conn.model('movie', movieSchema);
 
 }
 

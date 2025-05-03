@@ -11,7 +11,6 @@ router.get('/movies', async (req, res) => {
 
       const Movie = await getModel(conn); // Asegúrate de que esto esté correcto
 
-        console.log("CONEXION AQUI",conn);
 
       const movies = await Movie.find({}); 
       console.log(movies); // Verifica que las películas se obtienen correctamente
@@ -21,7 +20,7 @@ router.get('/movies', async (req, res) => {
     }
   });
 
-  router.post('/movies', async (req, res) => {
+  router.post('/moviesupdate', async (req, res) => {
     try {
  
       const conn = await connectDB(); // Conectar a la base de datos
@@ -36,7 +35,55 @@ router.get('/movies', async (req, res) => {
     }
   });
 
-  
-    
+  router.get('/movies/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
 
+      const conn = await connectDB(); // Conectar a la base de datos
+
+      const Movie = await getModel(conn); // Asegúrate de que esto esté correcto
+
+      const movie = await Movie.findById(id);
+      if (!movie) return res.status(404).json({ message: 'Película no encontrada' });
+      res.json(movie);
+    } catch (err) {
+      res.status(500).json({ message: 'Error al obtener película' });
+    }
+  }
+  );
+  
+  router.put('/movies/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const conn = await connectDB(); // Conectar a la base de datos
+
+      const Movie = await getModel(conn); // Asegúrate de que esto esté correcto
+
+      const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, { new: true });
+      if (!updatedMovie) return res.status(404).json({ message: 'Película no encontrada' });
+      res.json(updatedMovie);
+    } catch (err) {
+      res.status(500).json({ message: 'Error al actualizar película' });
+    }
+  }
+  );
+
+  router.delete('/moviesdelete/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const conn = await connectDB(); // Conectar a la base de datos
+
+      const Movie = await getModel(conn); // Asegúrate de que esto esté correcto
+
+      const deletedMovie = await Movie.findByIdAndDelete(id);
+      if (!deletedMovie) return res.status(404).json({ message: 'Película no encontrada' });
+      res.json({ message: 'Película eliminada' });
+    } catch (err) {
+      res.status(500).json({ message: 'Error al eliminar película' });
+    }
+  }
+  );
+  
+  
+      
 module.exports = router;
