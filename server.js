@@ -2,19 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const {handleConnect}= require('./confy/conf'); 
 
 const app = express();
+handleConnect(); // Conectar a MongoDB
 
 // Configurar middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Conectar a MongoDB
-mongoose.connect('mongodb://localhost:27017/local')
-  .then(() => console.log('Conectado a MongoDB'))
-  .catch(err => console.error('Error al conectar:', err));
-
+// 
 // Rutas de la API
 app.use('/api/auth', require('./models/backend/routes/auth'));
 app.use('/api/movies', require('./models/backend/routes/Movies')); // Corregido a minúscula

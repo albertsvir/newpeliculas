@@ -5,7 +5,7 @@ const Movie = require('../Movie'); // Modelo de película
 // Obtener todas las películas
 router.get('/movies', async (req, res) => {
     try {
-      const movies = await Movie.find(); 
+      const movies = await Movie.find({}); 
       console.log(movies); // Verifica que las películas se obtienen correctamente
       res.json(movies);
     } catch (err) {
