@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <style>
+    :root {
+      --primary-color: #2196f3;
+      --secondary-color: #ff9800;
+      --background-color: #0d1117;
+      --card-color: #161b22;
+      --text-color: #e6edf3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: var(--card-color);
+      padding: 30px;
+      border-radius: 8px;
+      width: 300px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #21262d;
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-container button:hover {
+      background-color: #1976d2;
+    }
+
+    .form-container .redirect {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .form-container .redirect a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .form-container .redirect a:hover {
+      text-decoration: underline;
+    }
+
+    #mensaje {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Register</h2>
+    <form id="registerForm">
+      <input type="text" id="reg-username" placeholder="Username" required />
+      <input type="email" id="reg-email" placeholder="Email" required />
+      <input type="password" id="reg-password" placeholder="Password" required />
+      <button type="submit">Register</button>
+    </form>
+    <div id="mensaje"></div>
+    <div class="redirect">
+      <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+  </div>
+
+  <script>
+ 
+ document.getElementById("registerForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const username = document.getElementById("reg-username").value.trim();
+  const email = document.getElementById("reg-email").value.trim();
+  const password = document.getElementById("reg-password").value;
+
+  const mensaje = document.getElementById("mensaje");
+  mensaje.textContent = "";
+
+  if (!username || !email || !password) {
+    mensaje.textContent = "Todos los campos son obligatorios.";
+    mensaje.style.color = "red";
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:3000/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      mensaje.style.color = "green";
+      mensaje.textContent = data.message || "Registro exitoso. Redirigiendo...";
+
+      // Aquí agregamos el setTimeout para la redirección
+      setTimeout(() => {
+        console.log("Redirigiendo a user.login.html...");
+        window.location.href = "users.login.html";
+      }, 2000);  // 2 segundos de espera
+
+    } else {
+      mensaje.style.color = "red";
+      mensaje.textContent = data.message || "Error al registrar.";
+    }
+  } catch (err) {
+    mensaje.style.color = "red";
+    mensaje.textContent = "Error de conexión con el servidor.";
+    console.error(err);
+  }
+});
+
+  </script>
+
+</body>
+</html>

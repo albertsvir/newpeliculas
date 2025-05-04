@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineMex</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2196f3;
+      --secondary-color: #ff9800;
+      --background-color: #0d1117;
+      --card-color: #161b22;
+      --text-color: #e6edf3;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: 'Poppins', sans-serif;
+      padding-bottom: 50px;
+    }
+    
+    .header {
+      padding: 30px 0 20px;
+      text-align: center;
+      background-color: rgba(13, 17, 23, 0.95);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+    
+    .header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 20px;
+    }
+    
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    
+    .movie-card {
+      background-color: var(--card-color);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .movie-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .movie-poster {
+      position: relative;
+      padding-top: 150%;
+      background-color: #21262d;
+      overflow: hidden;
+    }
+    
+    .movie-poster img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .movie-card:hover .movie-poster img {
+      transform: scale(1.05);
+    }
+    
+    .movie-info {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .movie-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text-color);
+    }
+    
+    .movie-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .movie-year {
+      background-color: rgba(33, 150, 243, 0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--primary-color);
+    }
+    
+    .movie-owner {
+      display: inline-block;
+      background-color: rgba(33, 150, 243, 0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    
+    .current-user {
+      background-color: rgba(255, 152, 0, 0.2);
+      color: var(--secondary-color);
+    }
+    
+    .movie-description {
+      font-size: 0.9rem;
+      color: #8b949e;
+      margin-bottom: 15px;
+    }
+    
+    .movie-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: auto;
+      gap: 10px;
+    }
+    
+    .add-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    
+    .add-btn:hover {
+      background-color: #1976d2;
+    }
+    
+    .edit-btn {
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      flex: 1;
+    }
+    
+    .edit-btn:hover {
+      background-color: #fb8c00;
+    }
+    
+    .view-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      flex: 1;
+    }
+    
+    .view-btn:hover {
+      background-color: #1976d2;
+    }
+    
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 101;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    
+    .modal-content {
+      background-color: var(--card-color);
+      margin: 10% auto;
+      padding: 25px;
+      max-width: 500px;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      color: var(--text-color);
+    }
+    
+    .close {
+      color: #8b949e;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    
+    .close:hover {
+      color: var(--text-color);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      background-color: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 5px;
+      color: var(--text-color);
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
+    }
+    
+    .submit-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 15px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+      background-color: #1976d2;
+    }
+    
+    @media (max-width: 768px) {
+      .movies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .movies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+      }
+      
+      .header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .movie-info {
+        padding: 15px;
+      }
+      
+      .movie-title {
+        font-size: 1rem;
+      }
+      
+      .header {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+    .header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px; /* Añade un poco de padding general al header */
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-container input[type="text"] {
+  width: 100%;
+  padding: 8px;
+}
+
+.search-container button {
+  margin-left: 5px;
+}
+  </style>
+</head>
+<body>
+    <header class="header" style="display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 20px;">
+        <h1>CineMex</h1>
+        <div class="search-container" style="display: flex; align-items: center;">
+          <input type="text" id="searchInput" placeholder="Buscar películas..." style="width: 100%; padding: 8px;">
+          <button id="searchButton" style="margin-left: 5px;">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+        <button id="addMovieBtn" class="add-btn">Agregar Película</button>
+      </header>
+      </header>
+  
+  <div class="container">
+    <div class="movies-grid" id="moviesGrid">
+      <!-- Las tarjetas de películas se generarán dinámicamente -->
+    </div>
+  </div>
+
+  <!-- Modal para agregar/editar película -->
+  <div id="movieModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modalTitle">Agregar Nueva Película</h2>
+      <form id="movieForm">
+        <input type="hidden" id="movieId">
+        <div class="form-group">
+          <label for="movieTitle">Título:</label>
+          <input type="text" id="movieTitle" required>
+        </div>
+        <div class="form-group">
+          <label for="movieYear">Año:</label>
+          <input type="number" id="movieYear" min="1900" max="2099" required>
+        </div>
+        <div class="form-group">
+          <label for="moviePoster">URL de Imagen (opcional):</label>
+          <input type="text" id="moviePoster">
+        </div>
+        <div class="form-group">
+          <label for="movieDescription">Descripción:</label>
+          <textarea id="movieDescription" rows="4"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Guardar</button>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    let allMovies = [];
+    let filteredMovies = [];
+    let currentPage = 1;
+    const moviesPerPage = 8;
+    
+    // Referencias DOM
+    const moviesGrid = document.getElementById('moviesGrid');
+    const loader = document.getElementById('loader');
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const paginationContainer = document.getElementById('pagination');
+    
+    // Cargar películas desde la API
+    async function fetchMovies() {
+      try {
+        // Verificar si ya tenemos películas en el almacenamiento local
+        const cachedMovies = localStorage.getItem('cachedMovies');
+        const cachedTimestamp = localStorage.getItem('cachedTimestamp');
+        const currentTime = new Date().getTime();
+        
+        // Usar caché si existe y tiene menos de 5 minutos
+        if (cachedMovies && cachedTimestamp && (currentTime - parseInt(cachedTimestamp) < 300000)) {
+          allMovies = JSON.parse(cachedMovies);
+          filteredMovies = [...allMovies];
+          renderMovies();
+          renderPagination();
+          return;
+        }
+        
+        loader.style.display = 'flex';
+        const response = await fetch('http://localhost:3000/api/movies/');
+        
+        if (!response.ok) {
+          throw new Error('Error al cargar las películas');
+        }
+        
+        const data = await response.json();
+        allMovies = data.movies;
+        filteredMovies = [...allMovies];
+        
+        // Guardar en caché local
+        localStorage.setItem('cachedMovies', JSON.stringify(allMovies));
+        localStorage.setItem('cachedTimestamp', currentTime.toString());
+        
+        renderMovies();
+        renderPagination();
+      } catch (error) {
+        console.error('Error:', error);
+        moviesGrid.innerHTML = `
+          <div class="no-results">
+            <h2>¡Ups! Algo salió mal</h2>
+            <p>No pudimos cargar las películas. Por favor intenta de nuevo más tarde.</p>
+          </div>
+        `;
+      } finally {
+        loader.style.display = 'none';
+      }
+    }
+    
+    // Renderizar películas con paginación
+    function renderMovies() {
+      if (filteredMovies.length === 0) {
+        moviesGrid.innerHTML = `
+          <div class="no-results">
+            <h2>No se encontraron resultados</h2>
+            <p>Intenta con otra búsqueda</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Calcular películas para la página actual
+      const startIndex = (currentPage - 1) * moviesPerPage;
+      const endIndex = startIndex + moviesPerPage;
+      const moviesToShow = filteredMovies.slice(startIndex, endIndex);
+      
+      // Usar DocumentFragment para mejor rendimiento
+      const fragment = document.createDocumentFragment();
+      
+      moviesToShow.forEach(movie => {
+        // Crear URL de imagen de película (usando placeholder si no hay URL)
+        // Usar imagen predeterminada estática para evitar solicitudes innecesarias
+        const imageUrl = movie.imagenurll || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450"><rect width="100%" height="100%" fill="%2321262d"/><text x="50%" y="50%" font-family="Arial" font-size="18" fill="%238b949e" text-anchor="middle" dominant-baseline="middle">Sin imagen</text></svg>';
+        
+        const movieEl = document.createElement('div');
+        movieEl.classList.add('movie-card');
+        
+        movieEl.innerHTML = `
+          <div class="movie-poster">
+            <img src="${imageUrl}" alt="${movie.title}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"300\" height=\"450\" viewBox=\"0 0 300 450\"><rect width=\"100%\" height=\"100%\" fill=\"%2321262d\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"18\" fill=\"%238b949e\" text-anchor=\"middle\" dominant-baseline=\"middle\">Sin imagen</text></svg>';">
+          </div>
+          <div class="movie-info">
+            <h3 class="movie-title">${movie.title}</h3>
+            <div class="movie-details">
+              <span class="movie-year">${movie.year || 'Año desconocido'}</span>
+              <span class="movie-genre">${movie.genre || 'Sin género'}</span>
+            </div>
+            ${movie.director ? `<p class="movie-director">Director: ${movie.director}</p>` : ''}
+          </div>
+        `;
+        
+        fragment.appendChild(movieEl);
+      });
+      
+      // Limpiar y añadir todos los elementos de una vez
+      moviesGrid.innerHTML = '';
+      moviesGrid.appendChild(fragment);
+    }
+    
+    // Renderizar paginación
+    function renderPagination() {
+      const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
+      paginationContainer.innerHTML = '';
+      
+      if (totalPages <= 1) return;
+      
+      // Botón anterior
+      const prevButton = document.createElement('button');
+      prevButton.innerHTML = '&laquo; Anterior';
+      prevButton.disabled = currentPage === 1;
+      prevButton.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderMovies();
+          renderPagination();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+      paginationContainer.appendChild(prevButton);
+      
+      // Botones de página
+      const maxPageButtons = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+      let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+      
+      if (endPage - startPage + 1 < maxPageButtons) {
+        startPage = Math.max(1, endPage - maxPageButtons + 1);
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.classList.toggle('active', i === currentPage);
+        pageButton.addEventListener('click', () => {
+          currentPage = i;
+          renderMovies();
+          renderPagination();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        paginationContainer.appendChild(pageButton);
+      }
+      
+      // Botón siguiente
+      const nextButton = document.createElement('button');
+      nextButton.innerHTML = 'Siguiente &raquo;';
+      nextButton.disabled = currentPage === totalPages;
+      nextButton.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderMovies();
+          renderPagination();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+      paginationContainer.appendChild(nextButton);
+    }
+    
+    // Buscar películas
+    function searchMovies(query) {
+      query = query.toLowerCase().trim();
+      
+      if (query === '') {
+        filteredMovies = [...allMovies];
+      } else {
+        filteredMovies = allMovies.filter(movie => {
+          return (
+            (movie.title && movie.title.toLowerCase().includes(query)) ||
+            (movie.director && movie.director.toLowerCase().includes(query)) ||
+            (movie.genre && movie.genre.toLowerCase().includes(query)) ||
+            (movie.year && movie.year.toString().includes(query))
+          );
+        });
+      }
+      
+      currentPage = 1;
+      renderMovies();
+      renderPagination();
+    }
+    
+    // Debounce function para evitar múltiples búsquedas
+    function debounce(func, wait) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+    
+    // Event listeners
+    searchButton.addEventListener('click', () => {
+      searchMovies(searchInput.value);
+    });
+    
+    // Uso de debounce para la búsqueda mientras se escribe
+    const debouncedSearch = debounce((query) => {
+      searchMovies(query);
+    }, 500);
+    
+    searchInput.addEventListener('input', (e) => {
+      debouncedSearch(e.target.value);
+    });
+    
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchMovies(searchInput.value);
+      }
+    });
+    
+    // Iniciar la aplicación - usar un flag para evitar cargas múltiples
+    let appInitialized = false;
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!appInitialized) {
+        fetchMovies();
+        appInitialized = true;
+      }
+    });
+  </script>
+</body>
+</html>
