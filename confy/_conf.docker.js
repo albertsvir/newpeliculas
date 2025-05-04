@@ -1,49 +1,45 @@
 const mongoose = require('mongoose');
 
 // Usamos mongoose en lugar del driver nativo para mantener consistencia
-const uri = 'mongodb://localhost:27017/bdpeliculas';
+// const uri = 'mongodb://localhost:27017/bdpeliculas';
 
-// Configuración para optimizar conexiones
+const uri = 'mongodb://root:example@localhost:27017/bdpeliculas?authSource=admin';
+
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  maxPoolSize: 10, // Limitar el número de conexiones en el pool
-  serverSelectionTimeoutMS: 5000 // Timeout para selección de servidor
+  maxPoolSize: 10,
+  serverSelectionTimeoutMS: 5000
 };
 
-// Variable para controlar el estado de la conexión
 let isConnected = false;
 
 async function connectDB() {
   try {
-    // Si ya estamos conectados, reusamos la conexión
-    if (isConnected) {
-      return mongoose.connection.db;
-    }
-    
-    // Eventos para manejo de la conexión
+    if (isConnected) return mongoose.connection.db;
+
     mongoose.connection.on('connected', () => {
       isConnected = true;
+      console.log('Conectado a MongoDB');
     });
-    
+
     mongoose.connection.on('error', (err) => {
       console.error('Error en la conexión MongoDB:', err);
       isConnected = false;
     });
-    
+
     mongoose.connection.on('disconnected', () => {
       isConnected = false;
     });
-    
-    // Conexión a la base de datos
+
     await mongoose.connect(uri, options);
-    
     return mongoose.connection.db;
   } catch (err) {
     console.error('Error al conectar con MongoDB:', err);
     throw err;
   }
 }
+
 
 // Función para cerrar la conexión (útil para tests y shutdown limpio)
 async function closeConnection() {

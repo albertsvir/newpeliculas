@@ -1,0 +1,119 @@
+[{
+  "_id": {
+    "$oid": "68164ebfd798f0e7b007e569"
+  },
+  "username": "Albertito",
+  "password": "$2b$10$w2kJJVPrkLNnuQAKp7erWOmhST79tRzrjqKyEroDbA3TUl1ND7MFa",
+  "role": "admin",
+  "listaPeliculas": [
+    {
+      "$oid": "644b1f2a5c3e2b1a4f0e6d7c"
+    },
+    {
+      "$oid": "644b1f3b5c3e2b1a4f0e6d7d"
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-05-03T17:13:35.227Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-03T17:13:35.227Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68165874f16eb4ca5025a155"
+  },
+  "username": "Fernanda",
+  "password": "$2b$10$NjQ3xZmLPxZGXeJ4OaepZeCUi23c5e9Aa1o7HdwOhX37e7PejWeQi",
+  "role": "admin",
+  "listaPeliculas": [
+    {
+      "$oid": "644b1f2a5c3e2b1a4f0e6d7c"
+    },
+    {
+      "$oid": "644b1f3b5c3e2b1a4f0e6d7d"
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-05-03T17:55:00.336Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-03T17:55:00.336Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681662a458cedf3c70bc4552"
+  },
+  "username": "apusito",
+  "password": "$2b$10$trIN6Q8WobdgHhylg5Zl/..0Gj7Aze5cgfpZcdRblnFT3Gw7Ex4qC",
+  "role": "admin",
+  "listaPeliculas": [
+    {
+      "$oid": "644b1f2a5c3e2b1a4f0e6d7c"
+    },
+    {
+      "$oid": "644b1f3b5c3e2b1a4f0e6d7d"
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-05-03T18:38:28.429Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-03T18:38:28.429Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68170f777932cca3225d75b8"
+  },
+  "username": "Fernandita",
+  "password": "$2b$10$5eDk2cZrN/kTGKu/eifuvuD9vJOApCtY0uDvSyYxS69QjUl8WKIuG",
+  "role": "user",
+  "listaPeliculas": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68178f95b94c7f4fcdb495c1"
+  },
+  "username": "test10",
+  "password": "$2b$10$.KcjzFyu4n.TTvwvAxGnKO1iar4HahYIQF6ogRx/DfWPSPWBT/kx.",
+  "role": "user",
+  "listaPeliculas": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68178fb5b94c7f4fcdb495c4"
+  },
+  "username": "test100",
+  "password": "$2b$10$lcv50lSPUUl6X6cwZYxuxepTlnZv/qdux8uIWZlqIRvc69nalSbPy",
+  "role": "user",
+  "listaPeliculas": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68178fd6b94c7f4fcdb495c7"
+  },
+  "username": "test1000",
+  "password": "$2b$10$aZoqfaGLzuTavhEZry8Tbe7hmUzWCAXubsJ6bYoZj96WaeMfrWICe",
+  "role": "user",
+  "listaPeliculas": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68179437b94c7f4fcdb495d4"
+  },
+  "username": "Apusitobb",
+  "password": "$2b$10$IbfQ5l15K.Y0JwAOi3FQ9.nhynognRRjOw3cFJZ0XLakIqBsrUKOW",
+  "role": "user",
+  "listaPeliculas": [],
+  "__v": 0
+}]

@@ -2,27 +2,10 @@ const express = require('express');
 const router = express.Router(); 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../User');
-const { _router } = require('../../../server');
+const User = require('../models/User');
+const { _router } = require('../../server');
 
 const SECRET_KEY = 'clavesita'; 
-// Middleware de autenticación
-function auth(req, res, next) {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  
-  if (!token) {
-    return res.status(401).json({ error: 'Token no proporcionado' });
-  }
-
-  try {
-    const decoded = jwt.verify(token, SECRET_KEY);
-    req.user = decoded; // Incluye id, username y role
-    next();
-  } catch (error) {
-    console.error('Error al verificar token:', error.message);
-    return res.status(401).json({ error: 'Token inválido' });
-  }
-}
 
 // Registro
 router.post('/register', async (req, res) => {
@@ -34,18 +17,16 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'El usuario ya existe' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       username,
-      password: hashedPassword,
+      password,
       role,
       listaPeliculas
     });
 
     await newUser.save();
     res.status(201).json({ message: 'Usuario creado', user: newUser.username });
-  } catch (err) {
-    console.error(err);
+  } catch (err) { 
     res.status(400).json({ error: err.message });
   }
 });
@@ -61,6 +42,7 @@ router.post('/login', async (req, res) => {
 
     // Comparar la contraseña
     const validPassword = await bcrypt.compare(password, user.password);
+    
     if (!validPassword) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }

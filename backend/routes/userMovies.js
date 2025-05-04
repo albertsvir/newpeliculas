@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {getModelUser } = require('../User')
-const {connectDB} = require('../../../confy/conf'); // Asegúrate de que la ruta sea correcta
+const {getModelUser } = require('../models/User')
+const {connectDB} = require('../../confy/conf'); // Asegúrate de que la ruta sea correcta
 
 // Agregar película a lista del usuario
 router.post('/:userId/add', async (req, res) => {
@@ -12,9 +12,6 @@ router.post('/:userId/add', async (req, res) => {
 
         const conn = await connectDB(); // Conectar a la base de datos
         const User = await getModelUser(conn); // Asegúrate de que esto esté correcto
-
-        console.log("CONEXION AQUI",conn);
-
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 

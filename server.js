@@ -4,22 +4,11 @@ const cors = require('cors');
 const path = require('path');
 const { connectDB } = require('./confy/conf');
 const compression = require('compression'); // Necesitarás instalar esta dependencia
-const moviesRouter = require('./models/backend/routes/Movies');
-const authRouter = require('./models/backend/routes/auth');
-const userMoviesRouter = require('./models/backend/routes/userMovies');
+const moviesRouter = require('./backend/routes/Movies');
+const authRouter = require('./backend/routes/auth');
+const userMoviesRouter = require('./backend/routes/userMovies');
 
 const app = express();
-
-// Inicializar conexión a MongoDB al iniciar el servidor
-(async () => {
-  try {
-    await connectDB();
-    console.log('Conexión a MongoDB inicializada al iniciar servidor');
-  } catch (err) {
-    console.error('Error al conectar con MongoDB al iniciar:', err);
-    process.exit(1); // Salir si no se puede conectar a la base de datos
-  }
-})();
 
 // Middlewares para optimización
 app.use(compression()); // Comprime las respuestas HTTP

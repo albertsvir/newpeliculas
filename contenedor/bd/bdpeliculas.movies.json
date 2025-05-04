@@ -1,0 +1,23 @@
+[{
+  "_id": {
+    "$oid": "681669f3913eaeeda201ea6a"
+  },
+  "id": "12345",
+  "userId": {
+    "$oid": "681662a458cedf3c70bc4552"
+  },
+  "title": "El laberinto del fauno",
+  "year": 2006,
+  "director": "Guillermo del Toro",
+  "actors": [],
+  "imagenurll": "https://m.media-amazon.com/images/S/pv-target-images/5ea3b0f74fe2901a697365e20b15ac3accdcf68365f9db9aa039f07ae5368165.jpg",
+  "fechaCreacion": {
+    "$date": "2025-05-03T19:09:39.732Z"
+  },
+  "createdAt": {
+    "$date": "2025-05-03T19:09:39.733Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-03T21:24:40.287Z"
+  }
+}]
