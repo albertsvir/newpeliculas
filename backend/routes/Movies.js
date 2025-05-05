@@ -85,13 +85,13 @@ router.post('/agregarpelicula', auth, async (req, res) => {
     language,
     country,
     cast,
+    imgUrl: req.body.imgUrl,
     userId: req.user.id
   });
 
   await newMovie.save();
   res.status(201).json(newMovie);
 });
-
 
 // Actualizar una película (solo si es del usuario)
 router.put('/actualizar/:id', auth, validateObjectId, async (req, res) => {

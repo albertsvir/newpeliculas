@@ -491,7 +491,7 @@ header {
       moviesToShow.forEach(movie => {
         // Crear URL de imagen de película (usando placeholder si no hay URL)
         // Usar imagen predeterminada estática para evitar solicitudes innecesarias
-        const imageUrl = movie.imagenurll || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450"><rect width="100%" height="100%" fill="%2321262d"/><text x="50%" y="50%" font-family="Arial" font-size="18" fill="%238b949e" text-anchor="middle" dominant-baseline="middle">Sin imagen</text></svg>';
+        const imageUrl = movie.imgUrl || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450"><rect width="100%" height="100%" fill="%2321262d"/><text x="50%" y="50%" font-family="Arial" font-size="18" fill="%238b949e" text-anchor="middle" dominant-baseline="middle">Sin imagen</text></svg>';
         
         const movieEl = document.createElement('div');
         movieEl.classList.add('movie-card');

@@ -461,46 +461,47 @@
         <input type="hidden" id="movieId">
         <div class="form-group">
           <label for="movieTitle">Título:</label>
-          <input type="text" id="movieTitle" required>
+          <input type="text" id="title" required>
         </div>
         <div class="form-group">
           <label for="movieYear">Año:</label>
-          <input type="number" id="movieYear" min="1900" max="2099" required>
+          <input type="number" id="year" min="1900" max="2099" required>
         </div>
         <div class="form-group">
           <label for="movieDirector">Director:</label>
-          <input type="text" id="movieDirector">
+          <input type="text" id="director">
         </div>
         <div class="form-group">
           <label for="movieDescription">Descripción:</label>
-          <textarea id="movieDescription" rows="4"></textarea>
+          <textarea id="description" rows="4"></textarea>
         </div>
         <div class="form-group">
           <label for="movieGenre">Género:</label>
-          <input type="text" id="movieGenre">
+          <input type="text" id="genre">
         </div>
         <div class="form-group">
           <label for="movieRating">Calificación:</label>
-          <input type="number" id="movieRating" min="0" max="10" step="0.1">
+          <input type="number" id="rating" min="0" max="10" step="0.1">
         </div>
         <div class="form-group">
           <label for="movieDuration">Duración (minutos):</label>
-          <input type="number" id="movieDuration" min="1">
+          <input type="number" id="duration" min="1">
         </div>
         <div class="form-group">
           <label for="movieLanguage">Idioma:</label>
-          <input type="text" id="movieLanguage">
+          <input type="text" id="language">
         </div>
         <div class="form-group">
           <label for="movieCountry">País:</label>
-          <input type="text" id="movieCountry">
+          <input type="text" id="country">
         </div>
         <div class="form-group">
           <label for="movieActors">Actores (separados por coma):</label>
-          <input type="text" id="movieActors">
-          <div class="form-group">
-            <label for="movieImageUrl">URL de la imagen:</label>
-            <input type="text" id="moviePoster">
+          <input type="text" id="cast">
+        </div>
+        <div class="form-group">
+          <label for="movieImageUrl">URL de la imagen:</label>
+          <input type="text" id="imgUrl">
         </div>
         <button type="submit" class="submit-btn">Guardar</button>
       </form>
@@ -572,54 +573,6 @@ window.addEventListener('click', (event) => {
   }
 });
 
-// Cargar películas desde la API
-async function fetchMovies() {
-  try {
-    // Verificar si ya tenemos películas en el almacenamiento local
-    const cachedMovies = localStorage.getItem('cachedMovies');
-    const cachedTimestamp = localStorage.getItem('cachedTimestamp');
-    const currentTime = new Date().getTime();
-
-    // Usar caché si existe y tiene menos de 5 minutos
-    if (cachedMovies && cachedTimestamp && (currentTime - parseInt(cachedTimestamp) < 300000)) {
-      const allMovies = JSON.parse(cachedMovies);
-      filteredMovies = [...allMovies];
-      renderMovies(filteredMovies); // Pasar filteredMovies a renderMovies
-      renderPagination();
-      return;
-    }
-
-    loader.style.display = 'flex';
-    const response = await fetch('http://localhost:3000/api/movies/');
-
-    if (!response.ok) {
-      throw new Error('Error al cargar las películas');
-    }
-
-    const data = await response.json();
-    allMovies = data.movies;
-    filteredMovies = [...allMovies];
-
-    // Guardar en caché local
-    localStorage.setItem('cachedMovies', JSON.stringify(allMovies));
-    localStorage.setItem('cachedTimestamp', currentTime.toString());
-
-    renderMovies(filteredMovies); // Pasar filteredMovies a renderMovies
-    renderPagination();
-  } catch (error) {
-    console.error('Error:', error);
-    moviesGrid.innerHTML = `
-      <div class="no-results">
-        <h2>¡Ups! Algo salió mal</h2>
-        <p>No pudimos cargar las películas. Por favor intenta de nuevo más tarde.</p>
-      </div>
-    `;
-  } finally {
-    loader.style.display = 'none';
-  }
-}
-
-
 
 // Función para decodificar el token JWT
 function decodeJwt(token) {
@@ -683,18 +636,22 @@ function isAdmin() {
 
 async function fetchMovies() {
   try {
-    const cachedMovies = localStorage.getItem('cachedMovies');
-    const cachedTimestamp = localStorage.getItem('cachedTimestamp');
-    const currentTime = new Date().getTime();
+    //const cachedMovies = localStorage.getItem('cachedMovies');
+    //const cachedTimestamp = localStorage.getItem('cachedTimestamp');
+   // const currentTime = new Date().getTime();
     const cacheDuration = 300000;
 
-    if (cachedMovies && cachedTimestamp && (currentTime - parseInt(cachedTimestamp) < cacheDuration)) {
-      allMovies = JSON.parse(cachedMovies);
-      filteredMovies = [...allMovies];
-      renderMovies(filteredMovies);
-      renderPagination(filteredMovies.length, moviesPerPage, currentPage);
-      return;
-    }
+    //const cachedMovies = localStorage.getItem('cachedMovies');
+    //const cachedTimestamp = localStorage.getItem('cachedTimestamp');
+    //const currentTime = new Date().getTime();
+
+    // if (cachedMovies && cachedTimestamp && (currentTime - parseInt(cachedTimestamp) < cacheDuration)) {
+    //   allMovies = JSON.parse(cachedMovies);
+    //   filteredMovies = [...allMovies];
+    //   renderMovies(filteredMovies);
+    //   renderPagination(filteredMovies.length, moviesPerPage, currentPage);
+    //   return;
+    // }
 
     loader.style.display = 'flex';
     const response = await fetch('http://localhost:3000/api/movies/');
@@ -707,8 +664,8 @@ async function fetchMovies() {
     allMovies = data.movies;
     filteredMovies = [...allMovies];
 
-    localStorage.setItem('cachedMovies', JSON.stringify(allMovies));
-    localStorage.setItem('cachedTimestamp', currentTime.toString());
+    //localStorage.setItem('cachedMovies', JSON.stringify(allMovies));
+    //localStorage.setItem('cachedTimestamp', currentTime.toString());
 
     renderMovies(filteredMovies);
     renderPagination(filteredMovies.length, moviesPerPage, currentPage);
@@ -754,6 +711,14 @@ function renderMovies(movies) {
         </div>
         ${movie.director ? `<p class="movie-director">Director: ${movie.director}</p>` : ''}
         <div class="movie-actions">
+         <div class"movie-imgUrl">${movie.imgUrl ? `<p class="movie-imgUrl">URL de la imagen: ${movie.imagenurll}</p>` : ''}</div>  
+         <div class "movie-description">${movie.description ? `<p class="movie-description">Descripción: ${movie.description}</p>` : ''}</div>
+         <div class "movie-rating">${movie.rating ? `<p class="movie-rating">Calificación: ${movie.rating}</p>` : ''}</div>
+         <div class "movie-duration">${movie.duration ? `<p class="movie-duration">Duración: ${movie.duration} min</p>` : ''}</div>
+          <div class "movie-language">${movie.language ? `<p class="movie-language">Idioma: ${movie.language}</p>` : ''}</div>
+          <div class "movie-country">${movie.country ? `<p class="movie-country">País: ${movie.country}</p>` : ''}</div>
+          <div class "movie-actors">${movie.cast ? `<p class="movie-actors">Actores: ${movie.cast.join(', ')}</p>` : ''}</div>
+        </div>
           ${isOwner ? `<button class="action-btn edit-btn" data-movie-id="${movie._id}"><i class="fas fa-pencil"></i> Editar</button>` : ''}
           ${isUserAdmin ? `<button class="action-btn delete-btn" data-movie-id="${movie._id}"><i class="fas fa-trash"></i> Eliminar</button>` : ''}
         </div>
@@ -857,16 +822,16 @@ function showAlert(message, type) {
 
 function populateEditForm(movieData) {
   document.getElementById('movieId').value = movieData._id || '';
-  document.getElementById('movieTitle').value = movieData.title || '';
-  document.getElementById('movieYear').value = movieData.year || '';
-  document.getElementById('movieDirector').value = movieData.director || '';
-  document.getElementById('movieDescription').value = movieData.description || '';
-  document.getElementById('movieGenre').value = movieData.genre || '';
-  document.getElementById('movieRating').value = movieData.rating || '';
-  document.getElementById('movieDuration').value = movieData.duration || '';
-  document.getElementById('movieLanguage').value = movieData.language || '';
-  document.getElementById('movieCountry').value = movieData.country || '';
-  document.getElementById('movieActors').value = (movieData.cast && movieData.cast.join(', ')) || ''; // Usando 'cast' del backend
+  document.getElementById('title').value = movieData.title || '';
+  document.getElementById('year').value = movieData.year || '';
+  document.getElementById('director').value = movieData.director || '';
+  document.getElementById('description').value = movieData.description || '';
+  document.getElementById('genre').value = movieData.genre || '';
+  document.getElementById('rating').value = movieData.rating || '';
+  document.getElementById('duration').value = movieData.duration || '';
+  document.getElementById('language').value = movieData.language || '';
+  document.getElementById('country').value = movieData.country || '';
+  document.getElementById('cast').value = (movieData.cast && movieData.cast.join(', ')) || ''; // Usando 'cast' del backend
 }
 
 function openEditModal() {
@@ -885,16 +850,17 @@ function saveEditedMovie(event) {
   }
   const movieId = movieIdElement.value || '';
 
-  const title = document.getElementById('movieTitle')?.value || '';
-  const year = parseInt(document.getElementById('movieYear')?.value || '0');
-  const director = document.getElementById('movieDirector')?.value || '';
-  const description = document.getElementById('movieDescription')?.value || '';
-  const genre = document.getElementById('movieGenre')?.value || '';
-  const rating = parseFloat(document.getElementById('movieRating')?.value || '0');
-  const duration = parseInt(document.getElementById('movieDuration')?.value || '0');
-  const language = document.getElementById('movieLanguage')?.value || '';
-  const country = document.getElementById('movieCountry')?.value || '';
-  const actorsInputValue = document.getElementById('movieActors')?.value || '';
+  const title = document.getElementById('title')?.value || '';
+  const year = parseInt(document.getElementById('year')?.value || '0');
+  const director = document.getElementById('director')?.value || '';
+  const description = document.getElementById('description')?.value || '';
+  const genre = document.getElementById('genre')?.value || '';
+  const rating = parseFloat(document.getElementById('rating')?.value || '0');
+  const duration = parseInt(document.getElementById('duration')?.value || '0');
+  const language = document.getElementById('language')?.value || '';
+  const country = document.getElementById('country')?.value || '';
+  const actorsInputValue = document.getElementById('cast')?.value || ''; // Fixed ID reference
+  const imgUrl = document.getElementById('imgUrl')?.value || ''; // Fixed ID reference
   const cast = actorsInputValue.split(',').map(actor => actor.trim());
 
   const updatedMovieData = {
@@ -907,6 +873,7 @@ function saveEditedMovie(event) {
     duration: duration,
     language: language,
     country: country,
+    imagenurl: imgUrl, // Fixed key reference
     cast: cast,
   };
 console.log("Datos a enviar para actualizar:", updatedMovieData);
@@ -1164,12 +1131,18 @@ movieForm.addEventListener('submit', async (event) => {
 
   // Obtener los valores del formulario
 
-  const title = document.getElementById('movieTitle').value;
-  const year = document.getElementById('movieYear').value;
-  const director = document.getElementById('movieDirector').value; // Obtener el valor del director
-  const actors = document.getElementById('movieActors').value;   // Obtener el valor de los actores
-  const imageUrl = document.getElementById('moviePoster').value;
-  const description = document.getElementById('movieDescription').value
+  const title = document.getElementById('title').value;
+  const year = document.getElementById('year').value;
+  const director = document.getElementById('director').value; // Obtener el valor del director
+  const actors = document.getElementById('cast').value;   // Obtener el valor de los actores
+  const imageUrl = document.getElementById('imgUrl').value;
+  const description = document.getElementById('description').value; 
+  const rating = document.getElementById('rating').value;
+  const duration = document.getElementById('duration').value;
+  const language = document.getElementById('language').value;
+  const country = document.getElementById('country').value; // Obtener el valor del país
+  const genre = document.getElementById('genre').value; // Obtener el valor del género
+
   const authToken = localStorage.getItem('Token');
   console.log('Token en la página de películas (authToken - DOMContentLoaded):', authToken);
   if (!authToken) {
@@ -1189,9 +1162,14 @@ movieForm.addEventListener('submit', async (event) => {
         title: title,
         year: parseInt(year),
         director: director,       // Incluir el director
-        actors: actors.split(','), // Incluir los actores (separados en un array)
-        imagenurll: imageUrl,
-        description: description
+        description: description,
+        genre: genre,
+        rating: parseFloat(rating),
+        duration: parseInt(duration),
+        language: language,
+        country: country, // Incluir el país
+        cast: actors, // Cambiar 'cast' a 'actors'
+        imgUrl: imageUrl // Incluir la URL de la imagen
       })
     });
 

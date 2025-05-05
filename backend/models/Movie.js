@@ -64,7 +64,14 @@ const MovieSchema = new mongoose.Schema({
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  } // Referencia al usuario propietario
+  }, // Referencia al usuario propietario
+  imgUrl: {
+    type: String,
+    trim: true,
+    maxLength: [500, 'La URL de la imagen no puede tener más de 500 caracteres.']
+  }
+}, {
+  timestamps: true // Agrega createdAt y updatedAt automáticamente
 });
 const Movie = mongoose.model('Movie', MovieSchema);
 
