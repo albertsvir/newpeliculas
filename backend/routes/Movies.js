@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { connectDB } = require('../../confy/conf');''
+const { connectDB } = require('../../confy/conf'); ''
 const Movie = require('../models/Movie');
 const auth = require('../middleware/auth'); // Middleware de autenticación
 const { validateObjectId } = require('../middleware/validateObjectId');
@@ -23,25 +23,28 @@ const connectDatabase = async () => {
 connectDatabase();
 
 // Obtener todas las películas 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-    
-    const [movies, total] = await Promise.all([
-      Movie.find({}).skip(skip).limit(limit).lean(),
-      Movie.countDocuments()
-    ]);
+
+    if (!req.user) {
+      res.status(401).json({ error: 'Usuario no autenticado' });
+      return;
+    }
+
+    const data = await Movie.find().lean(); // Usamos lean() para obtener un objeto JavaScript simple
+    if (!data || data.length === 0) return res.status(200).json({ message: 'No se encontraron películas' });
+
+    //Generar propiedad "owner" para cada película en caso de que el ownerId sea igual a req.user.id  
+    const movies = data.map(movie => {
+      const isOwner = movie.ownerId && movie.ownerId.toString() === req.user.id.toString();
+      return {
+        ...movie,
+        owner: isOwner
+      };
+    });
     
     res.json({
-      movies,
-      pagination: {
-        total,
-        pages: Math.ceil(total / limit),
-        currentPage: page,
-        limit
-      }
+      movies
     });
   } catch (err) {
     console.error('Error al obtener películas:', err);
@@ -67,10 +70,14 @@ router.get('/:id', validateObjectId, async (req, res) => {
 router.post('/agregarpelicula', auth, async (req, res) => {
   // Verifica req.user inmediatamente después del middleware
   if (!req.user) {
-    return res.status(401).json({ error: 'Usuario no autenticado' });
+    res.status(401).json({ error: 'Usuario no autenticado' });
+    return;
   }
 
-  if(req.user.role !== "admin") res.status(403).json({ error: 'No tienes permiso para agregar películas' });
+  if (req.user.role !== "admin") {
+    res.status(403).json({ error: 'No tienes permiso para agregar películas' })
+    return;
+  }
 
   // El resto del código como antes...
   const { title, year, director, description, genre, rating, duration, language, country, cast } = req.body;
@@ -86,7 +93,7 @@ router.post('/agregarpelicula', auth, async (req, res) => {
     country,
     cast,
     imgUrl: req.body.imgUrl,
-    userId: req.user.id
+    ownerId: req.user.id
   });
 
   await newMovie.save();
@@ -94,32 +101,30 @@ router.post('/agregarpelicula', auth, async (req, res) => {
 });
 
 // Actualizar una película (solo si es del usuario)
-router.put('/actualizar/:id', auth, validateObjectId, async (req, res) => {
+router.put('/actualizar', auth, validateObjectId, async (req, res) => {
   try {
     // Buscar la película en la base de datos
-    const movie = await Movie.findById(req.params.id);
-    
+
+    if(!req.user) {
+      res.status(401).json({ error: 'Usuario no autenticado' });
+      return;
+    }
+
+    const movie = await Movie.findById(req.body._id);
+
     // Verificar si la película existe
     if (!movie) {
       return res.status(404).json({ message: 'Película no encontrada' });
     }
 
-    // Verificar si el usuario que intenta actualizar es el dueño de la película
-    if (!movie.userId) {
-      return res.status(400).json({ message: 'La película no tiene un usuario asignado.' });
-    }
-
-    // Verificar si el userId de la película coincide con el id del usuario autenticado
-    if (movie.userId.toString() !== req.user.id) {
+    if(movie.ownerId != req.user.id) {
       return res.status(403).json({ message: 'No tienes permiso para modificar esta película' });
     }
 
     // Actualizar los campos de la película con los datos del cuerpo de la solicitud
     Object.assign(movie, req.body);
-
     // Guardar los cambios en la base de datos
     await movie.save();
-
     // Devolver la película actualizada como respuesta
     res.json(movie);
   } catch (err) {
@@ -172,7 +177,7 @@ router.post('/approve/:requestId', auth, async (req, res) => {
   try {
     const solicitud = await DeleteRequest.findById(req.params.requestId);
     if (!solicitud) return res.status(404).json({ message: 'Solicitud no encontrada' });
-    
+
     solicitud.aprobado = true;
     solicitud.aprobadoPor = req.user.id;
     await solicitud.save();
@@ -187,18 +192,15 @@ router.post('/approve/:requestId', auth, async (req, res) => {
 // Eliminar una película si fue autorizado
 router.delete('/:id', auth, validateObjectId, async (req, res) => {
   try {
-    const solicitud = await DeleteRequest.findOne({
-      movieId: req.params.id,
-      userId: req.user.id,
-      aprobado: true
-    });
+
+    if(!req.user) {
+      res.status(401).json({ error: 'Usuario no autenticado' });
+      return;
+    }
     
-    if (!solicitud) return res.status(403).json({ message: 'Eliminación no autorizada' });
-
     const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
-    if (!deletedMovie) return res.status(404).json({ message: 'Película no encontrada' });
 
-    await DeleteRequest.findByIdAndDelete(solicitud._id);
+    if (!deletedMovie) return res.status(404).json({ message: 'Película no encontrada' });
 
     res.json({ message: 'Película eliminada correctamente' });
   } catch (err) {

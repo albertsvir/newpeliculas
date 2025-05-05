@@ -1,0 +1,77 @@
+.action-btn {
+    width: 100%;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    flex: 1;
+}
+
+.add-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.edit-btn {
+    background-color: #9c27b0;
+    color: white;
+}
+
+
+.delete-btn {
+    background-color: #673ab7;
+    /* Otro tono de morado */
+    color: white;
+}
+
+
+/*----HOVER EFFECTS----*/
+.add-btn:hover {
+    background-color: #1976d2;
+}
+
+
+
+.edit-btn:hover {
+    background-color: #fb8c00;
+}
+
+.view-btn:hover {
+    background-color: #1976d2;
+}
+
+.submit-btn:hover {
+    background-color: #1976d2;
+}
+
+.delete-btn:hover {
+    background-color: #512da8;
+    /* Morado aún más oscuro al pasar el ratón */
+}
+
+.edit-btn:hover {
+    background-color: #7b1fa2;
+    /* Morado más oscuro al pasar el ratón */
+}
+
+.submit-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+/*----childs elements----*/
+
+.action-btn i {
+    margin-right: 5px;
+    /* Espacio entre el icono y el texto */
+}

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CineMex</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style-buttons.css" />
+  <link rel="stylesheet" href="./style-card.movie.css" />
+  <link rel="stylesheet" href="./style-modal.edit.css" />
   <style>
     :root {
       --primary-color: #2196f3;
@@ -13,21 +17,21 @@
       --card-color: #161b22;
       --text-color: #e6edf3;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
     }
-    
+
     body {
       background-color: var(--background-color);
       color: var(--text-color);
       font-family: 'Poppins', sans-serif;
       padding-bottom: 50px;
     }
-    
+
     .header {
       padding: 30px 0 20px;
       text-align: center;
@@ -43,7 +47,7 @@
       padding-left: 30px;
       padding-right: 30px;
     }
-    
+
     .header h1 {
       font-size: 2.5rem;
       background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
@@ -51,20 +55,20 @@
       background-clip: text;
       color: transparent;
     }
-    
+
     .container {
       width: 90%;
       max-width: 1200px;
       margin: 0 auto;
       padding-top: 20px;
     }
-    
+
     .movies-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 30px;
     }
-    
+
     .movie-card {
       background-color: var(--card-color);
       border-radius: 15px;
@@ -75,19 +79,19 @@
       display: flex;
       flex-direction: column;
     }
-    
+
     .movie-card:hover {
       transform: translateY(-10px);
       box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
     }
-    
+
     .movie-poster {
       position: relative;
       padding-top: 150%;
       background-color: #21262d;
       overflow: hidden;
     }
-    
+
     .movie-poster img {
       position: absolute;
       top: 0;
@@ -97,32 +101,32 @@
       object-fit: cover;
       transition: transform 0.5s ease;
     }
-    
+
     .movie-card:hover .movie-poster img {
       transform: scale(1.05);
     }
-    
+
     .movie-info {
       padding: 20px;
       flex-grow: 1;
       display: flex;
       flex-direction: column;
     }
-    
+
     .movie-title {
       font-size: 1.2rem;
       font-weight: 600;
       margin-bottom: 10px;
       color: var(--text-color);
     }
-    
+
     .movie-details {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 15px;
     }
-    
+
     .movie-year {
       background-color: rgba(33, 150, 243, 0.2);
       padding: 4px 10px;
@@ -130,7 +134,7 @@
       font-size: 0.8rem;
       color: var(--primary-color);
     }
-    
+
     .movie-owner {
       display: inline-block;
       background-color: rgba(33, 150, 243, 0.2);
@@ -140,56 +144,22 @@
       color: var(--primary-color);
       margin-bottom: 10px;
     }
-    
+
     .current-user {
       background-color: rgba(255, 152, 0, 0.2);
       color: var(--secondary-color);
     }
-    
+
     .movie-description {
       font-size: 0.9rem;
       color: #8b949e;
       margin-bottom: 15px;
     }
-    
-    .movie-actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: auto;
-      gap: 10px;
-    }
-    
-    .add-btn {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-    }
-    
-    .add-btn:hover {
-      background-color: #1976d2;
-    }
-    
-    .edit-btn {
-      background-color: var(--secondary-color);
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-      flex: 1;
-    }
-    
-    .edit-btn:hover {
-      background-color: #fb8c00;
-    }
-    
+
+
+
+
+
     .view-btn {
       background-color: var(--primary-color);
       color: white;
@@ -201,11 +171,8 @@
       transition: background-color 0.3s ease;
       flex: 1;
     }
-    
-    .view-btn:hover {
-      background-color: #1976d2;
-    }
-    
+
+
     /* Modal styles */
     .modal {
       display: none;
@@ -217,18 +184,21 @@
       height: 100%;
       background-color: rgba(0, 0, 0, 0.7);
     }
+
     .modal-content {
-    background-color: var(--card-color);
-    margin: 10% auto;
-    padding: 25px;
-    max-width: 500px;
-    border-radius: 15px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    color: var(--text-color);
-    overflow-y: auto; /* Añadido para permitir el desplazamiento vertical */
-    max-height: 80vh; /* Añadido para limitar la altura máxima del modal */
-  }
-    
+      background-color: var(--card-color);
+      margin: 10% auto;
+      padding: 25px;
+      max-width: 500px;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      color: var(--text-color);
+      overflow-y: auto;
+      /* Añadido para permitir el desplazamiento vertical */
+      max-height: 80vh;
+      /* Añadido para limitar la altura máxima del modal */
+    }
+
     .close {
       color: #8b949e;
       float: right;
@@ -237,23 +207,24 @@
       cursor: pointer;
       transition: color 0.3s ease;
     }
-    
+
     .close:hover {
       color: var(--text-color);
     }
-    
+
     .form-group {
       margin-bottom: 20px;
     }
-    
+
     label {
       display: block;
       margin-bottom: 8px;
       font-weight: 500;
       color: var(--text-color);
     }
-    
-    input, textarea {
+
+    input,
+    textarea {
       width: 100%;
       padding: 12px;
       background-color: #21262d;
@@ -263,36 +234,20 @@
       font-size: 1rem;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
-    
-    input:focus, textarea:focus {
+
+    input:focus,
+    textarea:focus {
       outline: none;
       border-color: var(--primary-color);
       box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
     }
-    
-    .submit-btn {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      width: 100%;
-      margin-top: 15px;
-      transition: background-color 0.3s ease;
-    }
-    
-    .submit-btn:hover {
-      background-color: #1976d2;
-    }
-    
+
     @media (max-width: 768px) {
       .movies-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 20px;
       }
-      
+
       .header h1 {
         font-size: 2rem;
       }
@@ -303,154 +258,151 @@
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 15px;
       }
-      
+
       .header h1 {
         font-size: 1.8rem;
       }
-      
+
       .movie-info {
         padding: 15px;
       }
-      
+
       .movie-title {
         font-size: 1rem;
       }
-      
+
       .header {
         flex-direction: column;
         gap: 15px;
       }
     }
+
     .header {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 20px;
-  padding: 10px 20px; /* Añade un poco de padding general al header */
-}
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 10px 20px;
+      /* Añade un poco de padding general al header */
+    }
 
-.search-container {
-  display: flex;
-  align-items: center;
-}
+    .search-container {
+      display: flex;
+      align-items: center;
+    }
 
-.search-container input[type="text"] {
-  width: 100%;
-  padding: 8px;
-}
+    .search-container input[type="text"] {
+      width: 100%;
+      padding: 8px;
+    }
 
-.search-container button {
-  margin-left: 5px;
-}
-.action-btn i {
-  margin-right: 5px; /* Espacio entre el icono y el texto */
-}
+    .search-container button {
+      margin-left: 5px;
+    }
 
-/* Estilos específicos para el botón de Editar (morado) */
-.edit-btn {
-  background-color: #9c27b0; /* Morado */
-  color: white;
-}
+    /* Opcional: Estilos para los botones de paginación (si también los quieres morados) */
+    .pagination-button {
+      padding: 8px 12px;
+      margin: 5px;
+      border: 1px solid #d1c4e9;
+      /* Borde morado claro */
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+      background-color: white;
+      color: #5e35b1;
+      /* Texto morado */
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
 
-.edit-btn:hover {
-  background-color: #7b1fa2; /* Morado más oscuro al pasar el ratón */
-}
+    .pagination-button:hover {
+      background-color: #ede7f6;
+      /* Morado muy claro al pasar el ratón */
+      border-color: #b39ddb;
+    }
 
-/* Estilos específicos para el botón de Eliminar (morado más oscuro) */
-.delete-btn {
-  background-color: #673ab7; /* Otro tono de morado */
-  color: white;
-}
+    .pagination-button.active {
+      background-color: #5e35b1;
+      /* Morado activo */
+      color: white;
+      border-color: #5e35b1;
+    }
 
-.delete-btn:hover {
-  background-color: #512da8; /* Morado aún más oscuro al pasar el ratón */
-}
+    .pagination-button.active:hover {
+      background-color: #4527a0;
+      /* Morado activo más oscuro al pasar el ratón */
+    }
 
-/* Opcional: Estilos para los botones de paginación (si también los quieres morados) */
-.pagination-button {
-  padding: 8px 12px;
-  margin: 5px;
-  border: 1px solid #d1c4e9; /* Borde morado claro */
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9em;
-  background-color: white;
-  color: #5e35b1; /* Texto morado */
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
+    .delete-btn {
+      background-color: #7b1fa2;
+      /* Morado más oscuro (igual al hover de Editar) */
+      color: white;
+    }
 
-.pagination-button:hover {
-  background-color: #ede7f6; /* Morado muy claro al pasar el ratón */
-  border-color: #b39ddb;
-}
+    .delete-btn:hover {
+      background-color: #5e35b1;
+      /* Morado aún más oscuro al pasar el ratón */
+    }
 
-.pagination-button.active {
-  background-color: #5e35b1; /* Morado activo */
-  color: white;
-  border-color: #5e35b1;
-}
+    /* Opcional: Estilos para los botones de paginación */
+    .pagination-button {
+      padding: 8px 12px;
+      margin: 5px;
+      border: 1px solid #d1c4e9;
+      /* Borde morado claro */
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+      background-color: white;
+      color: #5e35b1;
+      /* Texto morado */
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
 
-.pagination-button.active:hover {
-  background-color: #4527a0; /* Morado activo más oscuro al pasar el ratón */
-}
-.delete-btn {
-  background-color: #7b1fa2; /* Morado más oscuro (igual al hover de Editar) */
-  color: white;
-}
+    .pagination-button:hover {
+      background-color: #ede7f6;
+      /* Morado muy claro al pasar el ratón */
+      border-color: #b39ddb;
+    }
 
-.delete-btn:hover {
-  background-color: #5e35b1; /* Morado aún más oscuro al pasar el ratón */
-}
+    .pagination-button.active {
+      background-color: #5e35b1;
+      /* Morado activo */
+      color: white;
+      border-color: #5e35b1;
+    }
 
-/* Opcional: Estilos para los botones de paginación */
-.pagination-button {
-  padding: 8px 12px;
-  margin: 5px;
-  border: 1px solid #d1c4e9; /* Borde morado claro */
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9em;
-  background-color: white;
-  color: #5e35b1; /* Texto morado */
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-.pagination-button:hover {
-  background-color: #ede7f6; /* Morado muy claro al pasar el ratón */
-  border-color: #b39ddb;
-}
-
-.pagination-button.active {
-  background-color: #5e35b1; /* Morado activo */
-  color: white;
-  border-color: #5e35b1;
-}
-
-.pagination-button.active:hover {
-  background-color: #4527a0; /* Morado activo más oscuro al pasar el ratón */
-}
+    .pagination-button.active:hover {
+      background-color: #4527a0;
+      /* Morado activo más oscuro al pasar el ratón */
+    }
   </style>
 </head>
+
 <body>
-    <header class="header" style="display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 20px;">
-        <h1>CineMex</h1>
-        <div class="search-container" style="display: flex; align-items: center;">
-          <input type="text" id="searchInput" placeholder="Buscar películas..." style="width: 100%; padding: 8px;">
-          <button id="searchButton" style="margin-left: 5px;">
-            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </button>
-        </div>
-        <button id="addMovieBtn" class="add-btn">Agregar Película</button>
-      </header>
-      </header>
-  
+  <header class="header" style="display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 20px;">
+    <h1>CineMex</h1>
+    <div class="search-container" style="display: flex; align-items: center;">
+      <input type="text" id="searchInput" placeholder="Buscar películas..." style="width: 100%; padding: 8px;">
+      <button id="searchButton" style="margin-left: 5px;">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+    </div>
+    <button id="addMovieBtn" class="action-btn add-btn">Agregar Película</button>
+  </header>
+  </header>
+
   <div class="container">
     <div class="movies-grid" id="moviesGrid">
       <!-- Las tarjetas de películas se generarán dinámicamente -->
     </div>
+    <div id="container-pagination"></div>
+
+    <div id="loader" style="display: none;">Cargando películas...</div>
   </div>
 
   <div id="movieModal" class="modal">
@@ -507,658 +459,232 @@
       </form>
     </div>
   </div>
-  <div id="loader" style="display: none;">Cargando películas...</div>
-  <div id="pagination" class="pagination">
+
   </div>
 
   <script>
-let allMovies = [];
-let filteredMovies = [];
-let currentPage = 1;
-const moviesPerPage = 8;
+    let allMovies = [];
+    let filteredMovies = [];
+    let currentPage = 1;
+    const moviesPerPage = 8;
+    const config = {
+      "api": {
+        "check_session": "http://localhost:3000/api/auth/check-session",
+        "getAllMovies": "http://localhost:3000/api/movies/",
+        "addMovie": 'http://localhost:3000/api/movies/agregarpelicula',
+        "updateMovie": 'http://localhost:3000/api/movies/actualizar',
+        "baseMovie": 'http://localhost:3000/api/movies/',
+      }
+    }
 
-// Referencias DOM
-const moviesGrid = document.getElementById('moviesGrid');
-const loader = document.getElementById('loader');
-const searchInput = document.getElementById('searchInput');
-const searchButton = document.getElementById('searchButton');
-const paginationContainer = document.getElementById('pagination');
-const addMovieBtn = document.getElementById('addMovieBtn');
-const movieModal = document.getElementById('movieModal');
-const closeBtn = document.querySelector('.close');
-const movieForm = document.getElementById('movieForm');
-const modalTitle = document.getElementById('modalTitle');
-const searchForm = document.getElementById('searchForm');
-
-
-if (searchForm) {
-  searchForm.addEventListener('submit', function(event) {
-    event.preventDefault();
+    // Referencias DOM
+    const moviesGrid = document.getElementById('moviesGrid');
+    const loader = document.getElementById('loader');
     const searchInput = document.getElementById('searchInput');
-    filterMovies(searchInput.value);
-  });
-}
-// Debounce function para evitar múltiples búsquedas
-function debounce(func, wait) {
-  let timeout;
-  return function(...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
-  };
-}
+    const searchButton = document.getElementById('searchButton');
+    const paginationContainer = document.getElementById('pagination');
+    const addMovieBtn = document.getElementById('addMovieBtn');
+    const movieModal = document.getElementById('movieModal');
+    const closeBtn = document.querySelector('.close');
+    const movieForm = document.getElementById('movieForm');
+    const modalTitle = document.getElementById('modalTitle');
 
-// Función para mostrar el modal de agregar película
-function openMovieModal() {
-  movieModal.style.display = 'block';
-  movieForm.reset(); // Limpiar el formulario
-  document.getElementById('movieId').value = ''; // Limpiar el ID en caso de edición futura
-  modalTitle.textContent = 'Agregar Nueva Película';
-}
-
-// Función para cerrar el modal
-function closeMovieModal() {
-  movieModal.style.display = 'none';
-}
-
-// Event listener para el botón "Agregar Película"
-addMovieBtn.addEventListener('click', openMovieModal);
-
-// Event listener para el botón de cerrar (la "x")
-closeBtn.addEventListener('click', closeMovieModal);
-
-// Cerrar el modal si se hace clic fuera del contenido del modal
-window.addEventListener('click', (event) => {
-  if (event.target === movieModal) {
-    closeMovieModal();
-  }
-});
+    const searchForm = document.getElementById('searchForm');
 
 
-// Función para decodificar el token JWT
-function decodeJwt(token) {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    return JSON.parse(jsonPayload);
-  } catch (error) {
-    console.error('Error al decodificar el token:', error);
-    return null;
-  }
-}
+    window.onload = function () {
 
-// Función para obtener el ID del usuario logueado desde el token JWT
-function getLoggedInUserId() {
-  const token = localStorage.getItem('Token');
-  if (token) {
-    const decodedToken = decodeJwt(token);
-    return decodedToken?.id || decodedToken?.userId || null; // Asegurarse de que decodedToken no sea null
-  }
-  return null;
-}
-
-// Cargar películas desde la API con caché
-
-
-function decodeJwt(token) {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    return JSON.parse(jsonPayload);
-  } catch (error) {
-    console.error('Error al decodificar el token:', error);
-    return null;
-  }
-}
-
-function getLoggedInUserId() {
-  const token = localStorage.getItem('Token');
-  if (token) {
-    const decodedToken = decodeJwt(token);
-    return decodedToken?.id || decodedToken?.userId || null;
-  }
-  return null;
-}
-
-function isAdmin() {
-  const token = localStorage.getItem('Token');
-  if (token) {
-    const decodedToken = decodeJwt(token);
-    return decodedToken?.role === 'admin';
-  }
-  return false;
-}
-
-async function fetchMovies() {
-  try {
-    //const cachedMovies = localStorage.getItem('cachedMovies');
-    //const cachedTimestamp = localStorage.getItem('cachedTimestamp');
-   // const currentTime = new Date().getTime();
-    const cacheDuration = 300000;
-
-    //const cachedMovies = localStorage.getItem('cachedMovies');
-    //const cachedTimestamp = localStorage.getItem('cachedTimestamp');
-    //const currentTime = new Date().getTime();
-
-    // if (cachedMovies && cachedTimestamp && (currentTime - parseInt(cachedTimestamp) < cacheDuration)) {
-    //   allMovies = JSON.parse(cachedMovies);
-    //   filteredMovies = [...allMovies];
-    //   renderMovies(filteredMovies);
-    //   renderPagination(filteredMovies.length, moviesPerPage, currentPage);
-    //   return;
-    // }
-
-    loader.style.display = 'flex';
-    const response = await fetch('http://localhost:3000/api/movies/');
-
-    if (!response.ok) {
-      throw new Error('Error al cargar las películas');
-    }
-
-    const data = await response.json();
-    allMovies = data.movies;
-    filteredMovies = [...allMovies];
-
-    //localStorage.setItem('cachedMovies', JSON.stringify(allMovies));
-    //localStorage.setItem('cachedTimestamp', currentTime.toString());
-
-    renderMovies(filteredMovies);
-    renderPagination(filteredMovies.length, moviesPerPage, currentPage);
-  } catch (error) {
-    console.error('Error:', error);
-    moviesGrid.innerHTML = `
-      <div class="no-results">
-        <h2>¡Ups! Algo salió mal</h2>
-        <p>No pudimos cargar las películas. Por favor intenta de nuevo más tarde.</p>
-      </div>
-    `;
-  } finally {
-    loader.style.display = 'none';
-  }
-}
-
-function renderMovies(movies) {
-  moviesGrid.innerHTML = '';
-  const fragment = document.createDocumentFragment();
-  const loggedInUserId = getLoggedInUserId();
-  const isUserAdmin = isAdmin();
-
-  movies.forEach(movie => {
-    if (!movie) {
-      console.error("¡Ojo! Elemento 'movie' es undefined:", movie);
-      return;
-    }
-
-    const isOwner = movie.userId === loggedInUserId;
-    const imageUrl = movie.imagenurll || `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450"><rect width="100%" height="100%" fill="%2321262d"/><text x="50%" y="50%" font-family="Arial" font-size="18" fill="%238b949e" text-anchor="middle" dominant-baseline="middle">Sin imagen</text></svg>`;
-
-    const movieEl = document.createElement('div');
-    movieEl.classList.add('movie-card');
-    movieEl.innerHTML = `
-      <div class="movie-poster">
-        <img src="${imageUrl}" alt="${movie.title}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;300&quot; height=&quot;450&quot; viewBox=&quot;0 0 300 450&quot;><rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;%2321262d&quot;/><text x=&quot;50%&quot; y=&quot;50%&quot; font-family=&quot;Arial&quot; font-size=&quot;18&quot; fill=&quot;%238b949e&quot; text-anchor=&quot;middle&quot; dominant-baseline=&quot;middle&quot;>Sin imagen</text></svg>';">
-      </div>
-      <div class="movie-info">
-        <h3 class="movie-title">${movie.title}</h3>
-        <div class="movie-details">
-          <span class="movie-year">${movie.year || 'Año desconocido'}</span>
-          <span class="movie-genre">${movie.genre || 'Sin género'}</span>
-        </div>
-        ${movie.director ? `<p class="movie-director">Director: ${movie.director}</p>` : ''}
-        <div class="movie-actions">
-         <div class"movie-imgUrl">${movie.imgUrl ? `<p class="movie-imgUrl">URL de la imagen: ${movie.imagenurll}</p>` : ''}</div>  
-         <div class "movie-description">${movie.description ? `<p class="movie-description">Descripción: ${movie.description}</p>` : ''}</div>
-         <div class "movie-rating">${movie.rating ? `<p class="movie-rating">Calificación: ${movie.rating}</p>` : ''}</div>
-         <div class "movie-duration">${movie.duration ? `<p class="movie-duration">Duración: ${movie.duration} min</p>` : ''}</div>
-          <div class "movie-language">${movie.language ? `<p class="movie-language">Idioma: ${movie.language}</p>` : ''}</div>
-          <div class "movie-country">${movie.country ? `<p class="movie-country">País: ${movie.country}</p>` : ''}</div>
-          <div class "movie-actors">${movie.cast ? `<p class="movie-actors">Actores: ${movie.cast.join(', ')}</p>` : ''}</div>
-        </div>
-          ${isOwner ? `<button class="action-btn edit-btn" data-movie-id="${movie._id}"><i class="fas fa-pencil"></i> Editar</button>` : ''}
-          ${isUserAdmin ? `<button class="action-btn delete-btn" data-movie-id="${movie._id}"><i class="fas fa-trash"></i> Eliminar</button>` : ''}
-        </div>
-      </div>
-    `;
-    fragment.appendChild(movieEl);
-  });
-  moviesGrid.appendChild(fragment);
-}
-
-function renderPagination(totalItems, itemsPerPage, currentPage) {
-  if (!paginationContainer) return;
-  paginationContainer.innerHTML = '';
-
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  for (let i = 1; i <= totalPages; i++) {
-    const button = document.createElement('button');
-    button.textContent = i;
-    button.classList.add('pagination-button');
-    if (i === currentPage) {
-      button.classList.add('active');
-    }
-    button.addEventListener('click', () => {
-      currentPage = i;
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      const endIndex = startIndex + itemsPerPage;
-      const moviesToShow = filteredMovies.slice(startIndex, endIndex);
-      renderMovies(moviesToShow);
-      updateActivePaginationButton();
-    });
-    paginationContainer.appendChild(button);
-  }
-}
-
-function updateActivePaginationButton() {
-  const buttons = document.querySelectorAll('.pagination-button');
-  buttons.forEach(button => {
-    button.classList.remove('active');
-    if (parseInt(button.textContent) === currentPage) {
-      button.classList.add('active');
-    }
-  });
-}
-
-function filterMovies(searchTerm) {
-  currentPage = 1;
-  filteredMovies = allMovies.filter(movie =>
-    movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (movie.director && movie.director.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (movie.actors && movie.actors.some(actor => actor.toLowerCase().includes(searchTerm.toLowerCase())))
-  );
-  const startIndex = (currentPage - 1) * moviesPerPage;
-  const endIndex = startIndex + moviesPerPage;
-  const moviesToShow = filteredMovies.slice(startIndex, endIndex);
-  renderMovies(moviesToShow);
-  renderPagination(filteredMovies.length, moviesPerPage, currentPage);
-}
-
-function handleEditMovie(movieId) {
-  const loggedInUserId = getLoggedInUserId();
-
-  fetch(`http://localhost:3000/api/movies/${movieId}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(movieData => {
-      if (movieData.userId === loggedInUserId) {
-        console.log('El usuario tiene permiso para editar la película con ID:', movieId);
-        populateEditForm(movieData);
-        openEditModal();
-        // Adjuntar el event listener al formulario *después* de que el modal se abra
-        const editForm = document.getElementById('movieForm');
-        if (editForm) {
-          editForm.removeEventListener('submit', saveEditedMovie);
-          editForm.addEventListener('submit', saveEditedMovie);
+      fetch(config.api.check_session, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('Token')}`
         }
-      } else {
-        console.log('El usuario no tiene permiso para editar esta película.');
-        showAlert('No tienes permiso para editar esta película.', 'warning');
+      })
+        .then(response => {
+          return {
+            status: response.status,
+            data: response.json()
+          }
+        })
+        .then(data => data.status === 200 ? getAllMovies() : procesarRespuestaHTTP(data.status))
+
+    };
+
+    function procesarRespuestaHTTP(status) {
+
+      switch (status) {
+        case 401:
+          //Redirigir a login
+          window.location.href = './login.html';
+          break;
+
+        case 403:
+          //Redirigir a login
+          alert('No tienes permiso para realizar esa acción.');
+          break;
+
+        default:
+
+          break;
       }
-    })
-    .catch(error => {
-      console.error('Error al obtener los detalles de la película:', error);
-      showAlert('Error al cargar los detalles de la película.', 'error');
-    });
-}
-
-function showAlert(message, type) {
-  const alertBox = document.createElement('div');
-  alertBox.className = `alert ${type}`;
-  alertBox.textContent = message;
-  document.body.appendChild(alertBox);
-  setTimeout(() => {
-    alertBox.remove();
-  }, 3000);
-}
-
-function populateEditForm(movieData) {
-  document.getElementById('movieId').value = movieData._id || '';
-  document.getElementById('title').value = movieData.title || '';
-  document.getElementById('year').value = movieData.year || '';
-  document.getElementById('director').value = movieData.director || '';
-  document.getElementById('description').value = movieData.description || '';
-  document.getElementById('genre').value = movieData.genre || '';
-  document.getElementById('rating').value = movieData.rating || '';
-  document.getElementById('duration').value = movieData.duration || '';
-  document.getElementById('language').value = movieData.language || '';
-  document.getElementById('country').value = movieData.country || '';
-  document.getElementById('cast').value = (movieData.cast && movieData.cast.join(', ')) || ''; // Usando 'cast' del backend
-}
-
-function openEditModal() {
-  const modal = document.getElementById('movieModal');
-  const modalTitle = document.getElementById('modalTitle');
-  modalTitle.textContent = 'Editar Película';
-  modal.style.display = 'block'; // O cualquier otro método para mostrar tu modal (e.g., cambiar clases CSS)
-}
-function saveEditedMovie(event) {
-  event.preventDefault();
-
-  const movieIdElement = document.getElementById('movieId');
-  if (!movieIdElement) {
-    console.error("Error: El elemento con ID 'movieId' no se encontró en el formulario.");
-    return; // Detener la función si el elemento no existe
-  }
-  const movieId = movieIdElement.value || '';
-
-  const title = document.getElementById('title')?.value || '';
-  const year = parseInt(document.getElementById('year')?.value || '0');
-  const director = document.getElementById('director')?.value || '';
-  const description = document.getElementById('description')?.value || '';
-  const genre = document.getElementById('genre')?.value || '';
-  const rating = parseFloat(document.getElementById('rating')?.value || '0');
-  const duration = parseInt(document.getElementById('duration')?.value || '0');
-  const language = document.getElementById('language')?.value || '';
-  const country = document.getElementById('country')?.value || '';
-  const actorsInputValue = document.getElementById('cast')?.value || ''; // Fixed ID reference
-  const imgUrl = document.getElementById('imgUrl')?.value || ''; // Fixed ID reference
-  const cast = actorsInputValue.split(',').map(actor => actor.trim());
-
-  const updatedMovieData = {
-    title: title,
-    year: year,
-    director: director,
-    description: description,
-    genre: genre,
-    rating: rating,
-    duration: duration,
-    language: language,
-    country: country,
-    imagenurl: imgUrl, // Fixed key reference
-    cast: cast,
-  };
-console.log("Datos a enviar para actualizar:", updatedMovieData);
-  console.log("Título:", updatedMovieData.title);
-  console.log("Año:", updatedMovieData.year);
-  console.log("Director:", updatedMovieData.director);
-  console.log("Descripción:", updatedMovieData.description);
-  console.log("Género:", updatedMovieData.genre);
-  console.log("Calificación:", updatedMovieData.rating);
-  console.log("Duración:", updatedMovieData.duration);
-  console.log("Idioma:", updatedMovieData.language);
-  console.log("País:", updatedMovieData.country);
-  console.log("Cast:", updatedMovieData.cast);
-  console.log("Imagen URL:", updatedMovieData.imagenurll);
-  console.log("Datos a enviar para actualizar:", updatedMovieData);
-
-  fetch(`http://localhost:3000/api/movies/actualizar/${movieId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('Token')}`
-    },
-    body: JSON.stringify(updatedMovieData),
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Película actualizada:', data);
-    showAlert('Película actualizada correctamente.', 'success');
-    closeEditModal();
-    fetchMovies();
-  })
-  .catch(error => {
-    console.error('Error al actualizar la película:', error);
-    showAlert('Error al actualizar la película.', 'error');
-  });
-}
 
-
-// Event listener para los botones "Editar" (ya lo tienes)
-document.addEventListener('click', function(event) {
-  if (event.target.classList.contains('edit-btn')) {
-    const movieId = event.target.dataset.movieId;
-    handleEditMovie(movieId);
-  }
-  // ... tu otro event listener para eliminar ...
-});
-
-function handleDeleteMovie(movieId) {
-  console.log('Eliminar película con ID:', movieId);
-  fetch(`/api/movies/${movieId}`, {
-    method: 'DELETE',
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    // Función para cerrar el modal
+    function closeMovieModal() {
+      movieModal.style.display = 'none';
     }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Película eliminada:', data);
-    fetchMovies(); // Recargar las películas después de eliminar
-  })
-  .catch(error => {
-    console.error('Error al eliminar la película:', error);
-    // Aquí puedes mostrar un mensaje de error al usuario
-  });
-}
 
-if (searchForm) {
-  searchForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-    filterMovies(searchInput.value);
-  });
-}
+    // Event listener para el botón "Agregar Película"
+    addMovieBtn.addEventListener('click', openMovieModal);
+    // Event listener para el botón de cerrar (la "x")
+    closeBtn.addEventListener('click', closeMovieModal);
+    searchInput.addEventListener('input', (e) => searchMovies(e.target.value));
 
-document.addEventListener('click', function(event) {
-  if (event.target.classList.contains('edit-btn')) {
-    const movieId = event.target.dataset.movieId;
-    handleEditMovie(movieId);
-  } else if (event.target.classList.contains('delete-btn')) {
-    const movieId = event.target.dataset.movieId;
-    handleDeleteMovie(movieId);
-  } else if (event.target.classList.contains('pagination-button')) {
-    // La lógica de paginación ya está manejada directamente en el listener de los botones de paginación
-  }
-});
+    /* 
+    -
+    -
+      SECCION DEDICADA A FUNCIONES DE OBTENCION Y RENDERIZACION DE PELICULAS
+    -
+    -
+    */
 
-// Llamar a fetchMovies al cargar la página
-fetchMovies();
+    async function getAllMovies() {
+      try {
+        const cachedMovies = localStorage.getItem('cachedMovies');
+        const cachedTimestamp = localStorage.getItem('cachedTimestamp');
+        const currentTime = new Date().getTime();
 
+        //cacheDuration 15 segundos
+        const cacheDuration = 15 * 1000; // 15 segundos
+        if (cachedMovies && cachedTimestamp && (currentTime - cachedTimestamp < cacheDuration)) {
+          allMovies = JSON.parse(cachedMovies);
+          renderMovies(allMovies);
+          return;
+        }
 
-function updateActivePaginationButton() {
-  const buttons = document.querySelectorAll('.pagination-button');
-  buttons.forEach(button => {
-    button.classList.remove('active');
-    if (parseInt(button.textContent) === currentPage) {
-      button.classList.add('active');
+        const response = await fetch(config.api.getAllMovies, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('Token')}`
+          }
+        });
+
+        if (!response.ok) throw new Error('Error al cargar las películas');
+
+        const data = await response.json();
+
+        localStorage.setItem('cachedMovies', JSON.stringify(data.movies));
+        localStorage.setItem('cachedTimestamp', currentTime.toString());
+        renderMovies(data.movies);
+      } catch (error) {
+        moviesGrid.innerHTML = `
+          <div class="no-results">
+            <h2>¡Ups! Algo salió mal</h2>
+            <p>No pudimos cargar las películas. Por favor intenta de nuevo más tarde.</p>
+          </div>
+        `;
+      } finally {
+        loader.style.display = 'none';
+      }
     }
-  });
-}
 
-function filterMovies(searchTerm) {
-  currentPage = 1;
-  filteredMovies = allMovies.filter(movie =>
-    movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (movie.director && movie.director.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (movie.actors && movie.actors.some(actor => actor.toLowerCase().includes(searchTerm.toLowerCase())))
-  );
-  const startIndex = (currentPage - 1) * moviesPerPage;
-  const endIndex = startIndex + moviesPerPage;
-  const moviesToShow = filteredMovies.slice(startIndex, endIndex);
-  renderMovies(moviesToShow);
-  renderPagination(filteredMovies.length, moviesPerPage, currentPage);
-}
+    function renderMovies(movies) {
+      moviesGrid.innerHTML = '';
+      const loggedInUserId = getLoggedInUserId();
+      const isUserAdmin = isAdmin();
 
+      movies.forEach(movie => {
+        if (!movie) {
+          console.error("¡Ojo! Elemento 'movie' es undefined:", movie);
+          return;
+        }
 
+        const imageUrl = movie.imgUrl || "ERROR AL OBTENER IMAGEN";
 
-// Event listener para los botones de editar y eliminar (delegación de eventos)
-document.addEventListener('click', function(event) {
-  if (event.target.classList.contains('edit-btn')) {
-    const movieId = event.target.dataset.movieId;
-    handleEditMovie(movieId); // Asegúrate de que esta función esté definida
-  } else if (event.target.classList.contains('delete-btn')) {
-    const movieId = event.target.dataset.movieId;
-    handleDeleteMovie(movieId); // Asegúrate de que esta función esté definida
-  }
-});
+        const movieEl = document.createElement('div');
+        movieEl.classList.add('movie-card');
+        movieEl.innerHTML = `
+          <div class="movie-poster">
+            <img src="${imageUrl}" alt="${movie.title}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;300&quot; height=&quot;450&quot; viewBox=&quot;0 0 300 450&quot;><rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;%2321262d&quot;/><text x=&quot;50%&quot; y=&quot;50%&quot; font-family=&quot;Arial&quot; font-size=&quot;18&quot; fill=&quot;%238b949e&quot; text-anchor=&quot;middle&quot; dominant-baseline=&quot;middle&quot;>Sin imagen</text></svg>';">
+          </div>
+          <div class="movie-info">
+            <h3 class="movie-title">${movie.title}</h3>
+            <div class="movie-details">
+              <span class="movie-year">${movie.year || 'Año desconocido'}</span>
+              <span class="movie-genre">${movie.genre || 'Sin género'}</span>
+            </div>
+            ${movie.director ? `<p class="movie-director">Director: ${movie.director}</p>` : ''}
+            <div class="movie-actions">
+            <div class "movie-description">${movie.description ? `<p class="movie-description">Descripción: ${movie.description}</p>` : ''}</div>
+            <div class "movie-rating">${movie.rating ? `<p class="movie-rating">Calificación: ${movie.rating}</p>` : ''}</div>
+            <div class "movie-duration">${movie.duration ? `<p class="movie-duration">Duración: ${movie.duration} min</p>` : ''}</div>
+              <div class "movie-language">${movie.language ? `<p class="movie-language">Idioma: ${movie.language}</p>` : ''}</div>
+              <div class "movie-country">${movie.country ? `<p class="movie-country">País: ${movie.country}</p>` : ''}</div>
+              <div class "movie-actors">${movie.cast ? `<p class="movie-actors">Actores: ${movie.cast.join(', ')}</p>` : ''}</div>
+            </div>
+            <div class="card-actions">
+              ${movie.owner ? `<button class="action-btn edit-btn" onclick="handleOpenModalEdit('${movie._id}')" ><i class="fas fa-pencil"></i> Editar</button>` : ''}
+              ${movie.owner ? `<button class="action-btn delete-btn"onclick="handleConfirmDeleteMovie('${movie._id}')"  style="margin-top:10px; margin-bottom:10px; " data-movie-id="${movie._id}"><i class="fas fa-trash"></i> Eliminar</button>` : ''}
+            </div>
+            </div>
+          </div>
+        `;
 
-// Llamar a fetchMovies al cargar la página
-fetchMovies();
+        moviesGrid.appendChild(movieEl);
+      });
 
-
-function decodeJwt(token) {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
-
-  return JSON.parse(jsonPayload);
-}
-// Ejemplo de una función de decodificación JWT (necesitarías incluir una librería como jwt-decode)
-function decodeJwt(token) {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
-
-  return JSON.parse(jsonPayload);
-}
-// Renderizar paginación
-function renderPagination() {
-  const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
-  paginationContainer.innerHTML = '';
-
-  if (totalPages <= 1) return;
-
-  const prevButton = document.createElement('button');
-  prevButton.innerHTML = '&laquo; Anterior';
-  prevButton.disabled = currentPage === 1;
-  prevButton.addEventListener('click', () => {
-    if (currentPage > 1) {
-      currentPage--;
-      renderMovies();
-      renderPagination();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  });
-  paginationContainer.appendChild(prevButton);
 
-  const maxPageButtons = 5;
-  let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
-  let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
 
-  if (endPage - startPage + 1 < maxPageButtons) {
-    startPage = Math.max(1, endPage - maxPageButtons + 1);
-  }
 
-  for (let i = startPage; i <= endPage; i++) {
-    const pageButton = document.createElement('button');
-    pageButton.textContent = i;
-    pageButton.classList.toggle('active', i === currentPage);
-    pageButton.addEventListener('click', () => {
-      currentPage = i;
-      renderMovies();
-      renderPagination();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-    paginationContainer.appendChild(pageButton);
-  }
+    /*----------------------------------------------------------*/
+    /* 
+    -
+    -
+      SECCION DEDICADA A FUNCIONES DE AGREGADO
+    -
+    -
+    */
 
-  const nextButton = document.createElement('button');
-  nextButton.innerHTML = 'Siguiente &raquo;';
-  nextButton.disabled = currentPage === totalPages;
-  nextButton.addEventListener('click', () => {
-    if (currentPage < totalPages) {
-      currentPage++;
-      renderMovies();
-      renderPagination();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    // ABRE MODAL DE AGREGAR PELICULA
+    function openMovieModal() {
+      movieModal.style.display = 'block';
+      movieForm.reset(); // Limpiar el formulario
+      document.getElementById('movieId').value = ''; // Limpiar el ID en caso de edición futura
+      modalTitle.textContent = 'Agregar Nueva Película';
     }
-  });
-  paginationContainer.appendChild(nextButton);
-}
 
-// Buscar películas
-function searchMovies(query) {
-  query = query.toLowerCase().trim();
+    //AQUI SE AGREGA PELICULA
+    movieForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Evitar la recarga de la página
 
-  if (query === '') {
-    filteredMovies = [...allMovies];
-  } else {
-    filteredMovies = allMovies.filter(movie => {
-      return (
-        (movie.title && movie.title.toLowerCase().includes(query)) ||
-        (movie.director && movie.director.toLowerCase().includes(query)) ||
-        (movie.genre && movie.genre.toLowerCase().includes(query)) ||
-        (movie.year && movie.year.toString().includes(query))
-      );
-    });
-  }
+      // Obtener los valores del formulario
 
-  currentPage = 1;
-  renderMovies();
-  renderPagination();
-}
+      const movieId = document.getElementById('movieId').value; // Obtener el ID de la película (si existe)
 
-// Debounce function para evitar múltiples búsquedas
-const debouncedSearch = debounce((query) => {
-  searchMovies(query);
-}, 500);
+      const isUpdate = movieId !== ''; // Verificar si es una actualización o una nueva película
 
-// Event listeners para la búsqueda
-searchButton.addEventListener('click', () => {
-  searchMovies(searchInput.value);
-});
+      const title = document.getElementById('title').value;
+      const year = document.getElementById('year').value;
+      const director = document.getElementById('director').value; // Obtener el valor del director
+      const actors = document.getElementById('cast').value;   // Obtener el valor de los actores
+      const imageUrl = document.getElementById('imgUrl').value;
+      const description = document.getElementById('description').value;
+      const rating = document.getElementById('rating').value;
+      const duration = document.getElementById('duration').value;
+      const language = document.getElementById('language').value;
+      const country = document.getElementById('country').value; // Obtener el valor del país
+      const genre = document.getElementById('genre').value; // Obtener el valor del género
 
-searchInput.addEventListener('input', (e) => {
-  debouncedSearch(e.target.value);
-});
 
-searchInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    searchMovies(searchInput.value);
-  }
-});
-movieForm.addEventListener('submit', async (event) => {
-  event.preventDefault(); // Evitar la recarga de la página
+      const authToken = localStorage.getItem('Token');
+      console.log('Token en la página de películas (authToken - DOMContentLoaded):', authToken);
 
-  // Obtener los valores del formulario
+      if (!authToken) procesarRespuestaHTTP(401);
 
-  const title = document.getElementById('title').value;
-  const year = document.getElementById('year').value;
-  const director = document.getElementById('director').value; // Obtener el valor del director
-  const actors = document.getElementById('cast').value;   // Obtener el valor de los actores
-  const imageUrl = document.getElementById('imgUrl').value;
-  const description = document.getElementById('description').value; 
-  const rating = document.getElementById('rating').value;
-  const duration = document.getElementById('duration').value;
-  const language = document.getElementById('language').value;
-  const country = document.getElementById('country').value; // Obtener el valor del país
-  const genre = document.getElementById('genre').value; // Obtener el valor del género
-
-  const authToken = localStorage.getItem('Token');
-  console.log('Token en la página de películas (authToken - DOMContentLoaded):', authToken);
-  if (!authToken) {
-    console.error('Token de autenticación no encontrado. El usuario debe iniciar sesión.');
-    // TODO: Mostrar mensaje al usuario: "Debes iniciar sesión para agregar películas."
-    return;
-  }
-
-  try {
-    const response = await fetch('http://localhost:3000/api/movies/agregarpelicula', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}` // Incluir el token en el encabezado Authorization
-      },
-      body: JSON.stringify({
+      const body = {
         title: title,
         year: parseInt(year),
         director: director,       // Incluir el director
@@ -1170,30 +696,186 @@ movieForm.addEventListener('submit', async (event) => {
         country: country, // Incluir el país
         cast: actors, // Cambiar 'cast' a 'actors'
         imgUrl: imageUrl // Incluir la URL de la imagen
-      })
+      }
+
+      if (isUpdate) {
+        body._id = movieId; // Incluir el ID de la película si es una actualización
+      }
+
+      const url = isUpdate ? config.api.updateMovie : config.api.addMovie; // URL para agregar o actualizar
+
+
+      try {
+        const response = await fetch(url, {
+          method: isUpdate ? 'PUT' : 'POST', // Cambiar a PUT si es una actualización
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}` // Incluir el token en el encabezado Authorization
+          },
+          body: JSON.stringify({
+            ...body
+          })
+        });
+
+        if (response.status !== 200) {
+          procesarRespuestaHTTP(response.status);
+          return;
+        }
+
+        const responseData = await response.json();
+
+        localStorage.removeItem('cachedMovies');
+        localStorage.removeItem('cachedTimestamp');
+
+        //Limpiar movieId
+        document.getElementById('movieId').value = '';
+        closeMovieModal();
+        getAllMovies();
+      } catch (error) {
+        console.error('Error de red al agregar la película:', error);
+
+      }
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Error al agregar la película:', errorData);
-      return;
+    /* ---------------------------------------------------------*/
+
+    /*
+    -
+    -
+      SECCION DEDICADA A FUNCIONES DE AUTHENTICACION Y AUTORIZACION
+    -
+    -
+    */
+
+    function isAdmin() {
+      const token = localStorage.getItem('Token');
+      if (token) {
+        const decodedToken = decodeJwt(token);
+        return decodedToken?.role === 'admin';
+      }
+      return false;
     }
 
-    const responseData = await response.json();
-    console.log('Película agregada con éxito:', responseData);
+    // Función para obtener el ID del usuario logueado desde el token JWT
+    function getLoggedInUserId() {
+      const token = localStorage.getItem('Token');
+      if (token) {
+        const decodedToken = decodeJwt(token);
+        return decodedToken?.id || decodedToken?.userId || null; // Asegurarse de que decodedToken no sea null
+      }
+      return null;
+    }
 
-    localStorage.removeItem('cachedMovies');
-    localStorage.removeItem('cachedTimestamp');
+    // Función para decodificar el token JWT
+    function decodeJwt(token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+      } catch (error) {
+        console.error('Error al decodificar el token:', error);
+        return null;
+      }
+    }
 
-    closeMovieModal();
-    fetchMovies();
-  } catch (error) {
-    console.error('Error de red al agregar la película:', error);
+    /*--------------------------------------------------------------*/
 
-  }
-});
 
-fetchMovies();
+    /*
+    -
+    -
+      SECCION DEDICADA A FUNCIONES DE ELIMINACION DE PELICULAS
+    -
+    - 
+    */
+
+    async function handleConfirmDeleteMovie(movieId) {
+      const confirmDelete = confirm('¿Estás seguro de que deseas eliminar esta película? Esta acción no se puede deshacer.');
+      if (confirmDelete) {
+        try {
+          const response = await fetch(`${config.api.baseMovie}${movieId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('Token')}`
+            }
+          });
+
+          if (response.status !== 200) {
+            procesarRespuestaHTTP(response.status);
+            return;
+          }
+
+          const responseData = await response.json();
+          showAlert('Película eliminada con éxito', 'success');
+          getAllMovies(); // Actualizar la lista de películas después de eliminar
+        } catch (error) {
+          console.error('Error al eliminar la película:', error);
+          showAlert('Error al eliminar la película', 'error');
+        }
+      }
+    }
+    /*--------------------------------------------------------------*/
+
+
+    function showAlert(message, type) {
+      const alertBox = document.createElement('div');
+      alertBox.className = `alert ${type}`;
+      alertBox.textContent = message;
+      document.body.appendChild(alertBox);
+      setTimeout(() => {
+        alertBox.remove();
+      }, 3000);
+    }
+
+    async function handleOpenModalEdit(id) {
+      openMovieModal();
+      const movieId = id;
+      document.getElementById('movieId').value = movieId; // Guardar el ID de la película en un campo oculto
+
+      const response = await fetch(`http://localhost:3000/api/movies/${movieId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('Token')}`
+        }
+      });
+      if (!response.ok) {
+        console.error('Error al obtener la película:', response.statusText);
+        return;
+      }
+      const movieData = await response.json();
+
+      Object.keys(movieData).forEach(key => {
+        const input = document.getElementById(key);
+        if (input) {
+          input.value = movieData[key] || ''; // Asignar el valor al campo correspondiente
+        }
+      });
+
+    }
+
+
+    // Buscar películas
+    function searchMovies(query) {
+      if (query.length < 3) {
+        return;
+      }
+      query = query.toLowerCase().trim();
+      const movies = JSON.parse(localStorage.getItem('cachedMovies')) || [];
+
+      const coincidencias = movies.filter(movie => {
+        return movie.title.toLowerCase().includes(query) || movie.director.toLowerCase().includes(query) || movie.genre.toLowerCase().includes(query) || movie.description.toLowerCase().includes(query);
+      });
+      renderMovies(coincidencias);
+    }
+
+
+
   </script>
 </body>
+
 </html>

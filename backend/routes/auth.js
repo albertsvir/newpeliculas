@@ -1,11 +1,31 @@
 const express = require('express');
-const router = express.Router(); 
+const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { _router } = require('../../server');
 
-const SECRET_KEY = 'clavesita'; 
+const SECRET_KEY = 'clavesita';
+
+
+router.get('/check-session', async (req, res) => {
+  try {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Token no proporcionado' });
+
+    //Validar token
+    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+      if (err) return res.status(401).json({ message: 'Token inválido' });
+      // Si el token es válido, puedes enviar la información del usuario
+      res.json({ message: 'Sesión válida', user: decoded });
+    });
+
+
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error);
+    res.status(500).json({ error: 'Error interno en el servidor' });
+  }
+});
 
 // Registro
 router.post('/register', async (req, res) => {
@@ -26,7 +46,7 @@ router.post('/register', async (req, res) => {
 
     await newUser.save();
     res.status(201).json({ message: 'Usuario creado', user: newUser.username });
-  } catch (err) { 
+  } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
@@ -42,7 +62,7 @@ router.post('/login', async (req, res) => {
 
     // Comparar la contraseña
     const validPassword = await bcrypt.compare(password, user.password);
-    
+
     if (!validPassword) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
@@ -61,7 +81,6 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Error interno en el servidor' });
   }
 });
-
 
 // Exporta el middleware directamente y el router como propiedad
 module.exports = router;// Exporta el router aquí, no auth
