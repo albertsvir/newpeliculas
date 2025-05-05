@@ -729,7 +729,7 @@
 
         //Limpiar movieId
         document.getElementById('movieId').value = '';
-        closeMovieModal();
+        window.location.reload();
         getAllMovies();
       } catch (error) {
         console.error('Error de red al agregar la película:', error);
@@ -810,6 +810,11 @@
           }
 
           const responseData = await response.json();
+
+          //Poner en tiempo de cache tiempo 0 para que se vuelva a cargar la lista de peliculas
+          localStorage.removeItem('cachedMovies');
+          localStorage.removeItem('cachedTimestamp');
+
           showAlert('Película eliminada con éxito', 'success');
           getAllMovies(); // Actualizar la lista de películas después de eliminar
         } catch (error) {
