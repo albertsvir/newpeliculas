@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { connectDB } = require('../../confy/conf');''
-const Movie = require('../models/Movie');
-const auth = require('../middleware/auth'); // Middleware de autenticación
-const { validateObjectId } = require('../middleware/validateObjectId');
-const DeleteRequest = require('../models/DeleteRequest'); // Asegúrate de importar DeleteRequest
+const { connectDB } = require('../../../confy/conf');
+const { Types } = require('mongoose');
+const Movie = require('../Movie');
+const auth = require('./auth'); // Middleware de autenticación
+const { validateObjectId } = require('../../../middleware/validateObjectId');
+const { handleDeleteRequest } = require('../models/backend/DeleteRequest'); // Asegúrate de que la ruta sea correcta
+const DeleteRequest = require('../DeleteRequest'); // Asegúrate de importar DeleteRequest
+const generateUniqueId = require('../../../utils/crypto'); // Asegúrate de importar la función para generar ID únicos
+const authMiddleware = require('../../../middleware/authmiddlleware'); // Middleware de autenticación
 
 
-const user = require('../models/User'); // Asegúrate de importar el modelo de usuario
+const user = require('../User'); // Asegúrate de importar el modelo de usuario
 
 
 const connectDatabase = async () => {
@@ -15,7 +19,7 @@ const connectDatabase = async () => {
     await connectDB();
     console.log('Conexión a base de datos inicializada para rutas de películas');
   } catch (err) {
-    console.error('Error al inicializar conexión a la base de datos:');
+    console.error('Error al inicializar conexión a la base de datos:', err);
   }
 };
 
@@ -66,14 +70,21 @@ router.get('/:id', validateObjectId, async (req, res) => {
 // Ruta para agregar una nueva película
 router.post('/agregarpelicula', auth, async (req, res) => {
   // Verifica req.user inmediatamente después del middleware
+  console.log('¿req.user existe?', Boolean(req.user));
+  console.log('Tipo de req.user:', typeof req.user);
+  console.log('Datos completos de req.user:', JSON.stringify(req.user, null, 2));
+  
   if (!req.user) {
+    console.log('Usuario no autenticado: req.user es undefined');
     return res.status(401).json({ error: 'Usuario no autenticado' });
   }
-
-  if(req.user.role !== "admin") res.status(403).json({ error: 'No tienes permiso para agregar películas' });
-
+  
+  console.log('ID en req.user:', req.user.id);
+  
   // El resto del código como antes...
   const { title, year, director, description, genre, rating, duration, language, country, cast } = req.body;
+
+
   const newMovie = new Movie({
     title,
     year,
@@ -88,7 +99,9 @@ router.post('/agregarpelicula', auth, async (req, res) => {
     userId: req.user.id
   });
 
+
   await newMovie.save();
+  console.log('Película guardada:', newMovie);
   res.status(201).json(newMovie);
 });
 

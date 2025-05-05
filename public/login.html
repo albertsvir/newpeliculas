@@ -101,68 +101,63 @@
 </div>
 
   
-  <script type="module">
-    document.addEventListener('DOMContentLoaded', async () => {
-      const form = document.getElementById('loginForm');
-      const mensajeElement = document.getElementById('mensaje');
-      const API_URL = 'http://localhost:3000/api/auth/login';
-  
-      function mostrarMensaje(texto, esError = false) {
-        mensajeElement.textContent = texto;
-        mensajeElement.className = esError ? 'error' : 'success';
+<script type="module">
+  document.addEventListener('DOMContentLoaded', async () => {
+    const form = document.getElementById('loginForm');
+    const mensajeElement = document.getElementById('mensaje');
+    const API_URL = 'http://localhost:3000/api/auth/login';
+
+    function mostrarMensaje(texto, esError = false) {
+      mensajeElement.textContent = texto;
+      mensajeElement.className = esError ? 'error' : 'success';
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitButton = form.querySelector('button[type="submit"]');
+      if (submitButton) submitButton.disabled = true;
+
+      mostrarMensaje('Iniciando sesión...');
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        mostrarMensaje('Por favor completa todos los campos', true);
+        if (submitButton) submitButton.disabled = false;
+        return;
       }
-  
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const submitButton = form.querySelector('button[type="submit"]');
-        if (submitButton) submitButton.disabled = true;
-        
-        mostrarMensaje('Iniciando sesión...');
-        
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
-        
-        if (!username || !password) {
-          mostrarMensaje('Por favor completa todos los campos', true);
-          if (submitButton) submitButton.disabled = false;
-          return;
-        }
-  
-        try {
-          const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-          });
-  
-          // Comprobamos si la respuesta fue exitosa
-          if (!response.ok) {
-            throw new Error('Respuesta del servidor no fue exitosa');
-          }
-  
-          const data = await response.json();
-          
-          if (response.ok) {
-            localStorage.setItem('token', data.token);
-            mostrarMensaje('¡Login exitoso! Redirigiendo...', false);
-            setTimeout(() => {
-              window.location.href = '/Peliculas/public/users.login.html'; // Cambia la URL según tu estructura de carpetas
-            }, 1500);
-          } else {
-            mostrarMensaje(data.message || 'Credenciales incorrectas', true);
-            if (submitButton) submitButton.disabled = false;
-          }
-        } catch (error) {
-          console.error('Error de conexión:', error);
-          mostrarMensaje('Error al conectar con el servidor. Verifica que el servidor esté corriendo.', true);
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('Token', data.token);
+          console.log('Token guardado en localStorage (Token):', localStorage.getItem('Token'));
+          mostrarMensaje('¡Login exitoso! Redirigiendo...', false);
+          setTimeout(() => {
+            window.location.href = '/Peliculas/public/users.login.html'; // Cambia la URL según tu estructura de carpetas
+          }, 1500);
+        } else {
+          mostrarMensaje(data.message || 'Credenciales incorrectas', true);
           if (submitButton) submitButton.disabled = false;
         }
-      });
+      } catch (error) {
+        console.error('Error de conexión:', error);
+        mostrarMensaje('Error al conectar con el servidor. Verifica que el servidor esté corriendo.', true);
+        if (submitButton) submitButton.disabled = false;
+      }
     });
-  </script>
-  
+  });
+</script>
 
 </body>
 </html>

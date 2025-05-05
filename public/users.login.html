@@ -217,16 +217,17 @@
       height: 100%;
       background-color: rgba(0, 0, 0, 0.7);
     }
-    
     .modal-content {
-      background-color: var(--card-color);
-      margin: 10% auto;
-      padding: 25px;
-      max-width: 500px;
-      border-radius: 15px;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-      color: var(--text-color);
-    }
+    background-color: var(--card-color);
+    margin: 10% auto;
+    padding: 25px;
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    color: var(--text-color);
+    overflow-y: auto; /* Añadido para permitir el desplazamiento vertical */
+    max-height: 80vh; /* Añadido para limitar la altura máxima del modal */
+  }
     
     .close {
       color: #8b949e;
@@ -341,6 +342,93 @@
 .search-container button {
   margin-left: 5px;
 }
+.action-btn i {
+  margin-right: 5px; /* Espacio entre el icono y el texto */
+}
+
+/* Estilos específicos para el botón de Editar (morado) */
+.edit-btn {
+  background-color: #9c27b0; /* Morado */
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #7b1fa2; /* Morado más oscuro al pasar el ratón */
+}
+
+/* Estilos específicos para el botón de Eliminar (morado más oscuro) */
+.delete-btn {
+  background-color: #673ab7; /* Otro tono de morado */
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #512da8; /* Morado aún más oscuro al pasar el ratón */
+}
+
+/* Opcional: Estilos para los botones de paginación (si también los quieres morados) */
+.pagination-button {
+  padding: 8px 12px;
+  margin: 5px;
+  border: 1px solid #d1c4e9; /* Borde morado claro */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  background-color: white;
+  color: #5e35b1; /* Texto morado */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.pagination-button:hover {
+  background-color: #ede7f6; /* Morado muy claro al pasar el ratón */
+  border-color: #b39ddb;
+}
+
+.pagination-button.active {
+  background-color: #5e35b1; /* Morado activo */
+  color: white;
+  border-color: #5e35b1;
+}
+
+.pagination-button.active:hover {
+  background-color: #4527a0; /* Morado activo más oscuro al pasar el ratón */
+}
+.delete-btn {
+  background-color: #7b1fa2; /* Morado más oscuro (igual al hover de Editar) */
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #5e35b1; /* Morado aún más oscuro al pasar el ratón */
+}
+
+/* Opcional: Estilos para los botones de paginación */
+.pagination-button {
+  padding: 8px 12px;
+  margin: 5px;
+  border: 1px solid #d1c4e9; /* Borde morado claro */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  background-color: white;
+  color: #5e35b1; /* Texto morado */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.pagination-button:hover {
+  background-color: #ede7f6; /* Morado muy claro al pasar el ratón */
+  border-color: #b39ddb;
+}
+
+.pagination-button.active {
+  background-color: #5e35b1; /* Morado activo */
+  color: white;
+  border-color: #5e35b1;
+}
+
+.pagination-button.active:hover {
+  background-color: #4527a0; /* Morado activo más oscuro al pasar el ratón */
+}
   </style>
 </head>
 <body>
@@ -365,11 +453,10 @@
     </div>
   </div>
 
-  <!-- Modal para agregar/editar película -->
   <div id="movieModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <h2 id="modalTitle">Agregar Nueva Película</h2>
+      <h2 id="modalTitle">Editar Película</h2>
       <form id="movieForm">
         <input type="hidden" id="movieId">
         <div class="form-group">
@@ -381,246 +468,754 @@
           <input type="number" id="movieYear" min="1900" max="2099" required>
         </div>
         <div class="form-group">
-          <label for="moviePoster">URL de Imagen (opcional):</label>
-          <input type="text" id="moviePoster">
+          <label for="movieDirector">Director:</label>
+          <input type="text" id="movieDirector">
         </div>
         <div class="form-group">
           <label for="movieDescription">Descripción:</label>
           <textarea id="movieDescription" rows="4"></textarea>
         </div>
+        <div class="form-group">
+          <label for="movieGenre">Género:</label>
+          <input type="text" id="movieGenre">
+        </div>
+        <div class="form-group">
+          <label for="movieRating">Calificación:</label>
+          <input type="number" id="movieRating" min="0" max="10" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="movieDuration">Duración (minutos):</label>
+          <input type="number" id="movieDuration" min="1">
+        </div>
+        <div class="form-group">
+          <label for="movieLanguage">Idioma:</label>
+          <input type="text" id="movieLanguage">
+        </div>
+        <div class="form-group">
+          <label for="movieCountry">País:</label>
+          <input type="text" id="movieCountry">
+        </div>
+        <div class="form-group">
+          <label for="movieActors">Actores (separados por coma):</label>
+          <input type="text" id="movieActors">
+          <div class="form-group">
+            <label for="movieImageUrl">URL de la imagen:</label>
+            <input type="text" id="moviePoster">
+        </div>
         <button type="submit" class="submit-btn">Guardar</button>
       </form>
     </div>
   </div>
-  
+  <div id="loader" style="display: none;">Cargando películas...</div>
+  <div id="pagination" class="pagination">
+  </div>
+
   <script>
-    let allMovies = [];
-    let filteredMovies = [];
-    let currentPage = 1;
-    const moviesPerPage = 8;
-    
-    // Referencias DOM
-    const moviesGrid = document.getElementById('moviesGrid');
-    const loader = document.getElementById('loader');
+let allMovies = [];
+let filteredMovies = [];
+let currentPage = 1;
+const moviesPerPage = 8;
+
+// Referencias DOM
+const moviesGrid = document.getElementById('moviesGrid');
+const loader = document.getElementById('loader');
+const searchInput = document.getElementById('searchInput');
+const searchButton = document.getElementById('searchButton');
+const paginationContainer = document.getElementById('pagination');
+const addMovieBtn = document.getElementById('addMovieBtn');
+const movieModal = document.getElementById('movieModal');
+const closeBtn = document.querySelector('.close');
+const movieForm = document.getElementById('movieForm');
+const modalTitle = document.getElementById('modalTitle');
+const searchForm = document.getElementById('searchForm');
+
+
+if (searchForm) {
+  searchForm.addEventListener('submit', function(event) {
+    event.preventDefault();
     const searchInput = document.getElementById('searchInput');
-    const searchButton = document.getElementById('searchButton');
-    const paginationContainer = document.getElementById('pagination');
-    
-    // Cargar películas desde la API
-    async function fetchMovies() {
-      try {
-        // Verificar si ya tenemos películas en el almacenamiento local
-        const cachedMovies = localStorage.getItem('cachedMovies');
-        const cachedTimestamp = localStorage.getItem('cachedTimestamp');
-        const currentTime = new Date().getTime();
-        
-        // Usar caché si existe y tiene menos de 5 minutos
-        if (cachedMovies && cachedTimestamp && (currentTime - parseInt(cachedTimestamp) < 300000)) {
-          allMovies = JSON.parse(cachedMovies);
-          filteredMovies = [...allMovies];
-          renderMovies();
-          renderPagination();
-          return;
-        }
-        
-        loader.style.display = 'flex';
-        const response = await fetch('http://localhost:3000/api/movies/');
-        
-        if (!response.ok) {
-          throw new Error('Error al cargar las películas');
-        }
-        
-        const data = await response.json();
-        allMovies = data.movies;
-        filteredMovies = [...allMovies];
-        
-        // Guardar en caché local
-        localStorage.setItem('cachedMovies', JSON.stringify(allMovies));
-        localStorage.setItem('cachedTimestamp', currentTime.toString());
-        
-        renderMovies();
-        renderPagination();
-      } catch (error) {
-        console.error('Error:', error);
-        moviesGrid.innerHTML = `
-          <div class="no-results">
-            <h2>¡Ups! Algo salió mal</h2>
-            <p>No pudimos cargar las películas. Por favor intenta de nuevo más tarde.</p>
-          </div>
-        `;
-      } finally {
-        loader.style.display = 'none';
-      }
+    filterMovies(searchInput.value);
+  });
+}
+// Debounce function para evitar múltiples búsquedas
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+// Función para mostrar el modal de agregar película
+function openMovieModal() {
+  movieModal.style.display = 'block';
+  movieForm.reset(); // Limpiar el formulario
+  document.getElementById('movieId').value = ''; // Limpiar el ID en caso de edición futura
+  modalTitle.textContent = 'Agregar Nueva Película';
+}
+
+// Función para cerrar el modal
+function closeMovieModal() {
+  movieModal.style.display = 'none';
+}
+
+// Event listener para el botón "Agregar Película"
+addMovieBtn.addEventListener('click', openMovieModal);
+
+// Event listener para el botón de cerrar (la "x")
+closeBtn.addEventListener('click', closeMovieModal);
+
+// Cerrar el modal si se hace clic fuera del contenido del modal
+window.addEventListener('click', (event) => {
+  if (event.target === movieModal) {
+    closeMovieModal();
+  }
+});
+
+// Cargar películas desde la API
+async function fetchMovies() {
+  try {
+    // Verificar si ya tenemos películas en el almacenamiento local
+    const cachedMovies = localStorage.getItem('cachedMovies');
+    const cachedTimestamp = localStorage.getItem('cachedTimestamp');
+    const currentTime = new Date().getTime();
+
+    // Usar caché si existe y tiene menos de 5 minutos
+    if (cachedMovies && cachedTimestamp && (currentTime - parseInt(cachedTimestamp) < 300000)) {
+      const allMovies = JSON.parse(cachedMovies);
+      filteredMovies = [...allMovies];
+      renderMovies(filteredMovies); // Pasar filteredMovies a renderMovies
+      renderPagination();
+      return;
     }
-    
-    // Renderizar películas con paginación
-    function renderMovies() {
-      if (filteredMovies.length === 0) {
-        moviesGrid.innerHTML = `
-          <div class="no-results">
-            <h2>No se encontraron resultados</h2>
-            <p>Intenta con otra búsqueda</p>
-          </div>
-        `;
-        return;
-      }
-      
-      // Calcular películas para la página actual
-      const startIndex = (currentPage - 1) * moviesPerPage;
-      const endIndex = startIndex + moviesPerPage;
+
+    loader.style.display = 'flex';
+    const response = await fetch('http://localhost:3000/api/movies/');
+
+    if (!response.ok) {
+      throw new Error('Error al cargar las películas');
+    }
+
+    const data = await response.json();
+    allMovies = data.movies;
+    filteredMovies = [...allMovies];
+
+    // Guardar en caché local
+    localStorage.setItem('cachedMovies', JSON.stringify(allMovies));
+    localStorage.setItem('cachedTimestamp', currentTime.toString());
+
+    renderMovies(filteredMovies); // Pasar filteredMovies a renderMovies
+    renderPagination();
+  } catch (error) {
+    console.error('Error:', error);
+    moviesGrid.innerHTML = `
+      <div class="no-results">
+        <h2>¡Ups! Algo salió mal</h2>
+        <p>No pudimos cargar las películas. Por favor intenta de nuevo más tarde.</p>
+      </div>
+    `;
+  } finally {
+    loader.style.display = 'none';
+  }
+}
+
+
+
+// Función para decodificar el token JWT
+function decodeJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error('Error al decodificar el token:', error);
+    return null;
+  }
+}
+
+// Función para obtener el ID del usuario logueado desde el token JWT
+function getLoggedInUserId() {
+  const token = localStorage.getItem('Token');
+  if (token) {
+    const decodedToken = decodeJwt(token);
+    return decodedToken?.id || decodedToken?.userId || null; // Asegurarse de que decodedToken no sea null
+  }
+  return null;
+}
+
+// Cargar películas desde la API con caché
+
+
+function decodeJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error('Error al decodificar el token:', error);
+    return null;
+  }
+}
+
+function getLoggedInUserId() {
+  const token = localStorage.getItem('Token');
+  if (token) {
+    const decodedToken = decodeJwt(token);
+    return decodedToken?.id || decodedToken?.userId || null;
+  }
+  return null;
+}
+
+function isAdmin() {
+  const token = localStorage.getItem('Token');
+  if (token) {
+    const decodedToken = decodeJwt(token);
+    return decodedToken?.role === 'admin';
+  }
+  return false;
+}
+
+async function fetchMovies() {
+  try {
+    const cachedMovies = localStorage.getItem('cachedMovies');
+    const cachedTimestamp = localStorage.getItem('cachedTimestamp');
+    const currentTime = new Date().getTime();
+    const cacheDuration = 300000;
+
+    if (cachedMovies && cachedTimestamp && (currentTime - parseInt(cachedTimestamp) < cacheDuration)) {
+      allMovies = JSON.parse(cachedMovies);
+      filteredMovies = [...allMovies];
+      renderMovies(filteredMovies);
+      renderPagination(filteredMovies.length, moviesPerPage, currentPage);
+      return;
+    }
+
+    loader.style.display = 'flex';
+    const response = await fetch('http://localhost:3000/api/movies/');
+
+    if (!response.ok) {
+      throw new Error('Error al cargar las películas');
+    }
+
+    const data = await response.json();
+    allMovies = data.movies;
+    filteredMovies = [...allMovies];
+
+    localStorage.setItem('cachedMovies', JSON.stringify(allMovies));
+    localStorage.setItem('cachedTimestamp', currentTime.toString());
+
+    renderMovies(filteredMovies);
+    renderPagination(filteredMovies.length, moviesPerPage, currentPage);
+  } catch (error) {
+    console.error('Error:', error);
+    moviesGrid.innerHTML = `
+      <div class="no-results">
+        <h2>¡Ups! Algo salió mal</h2>
+        <p>No pudimos cargar las películas. Por favor intenta de nuevo más tarde.</p>
+      </div>
+    `;
+  } finally {
+    loader.style.display = 'none';
+  }
+}
+
+function renderMovies(movies) {
+  moviesGrid.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  const loggedInUserId = getLoggedInUserId();
+  const isUserAdmin = isAdmin();
+
+  movies.forEach(movie => {
+    if (!movie) {
+      console.error("¡Ojo! Elemento 'movie' es undefined:", movie);
+      return;
+    }
+
+    const isOwner = movie.userId === loggedInUserId;
+    const imageUrl = movie.imagenurll || `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450"><rect width="100%" height="100%" fill="%2321262d"/><text x="50%" y="50%" font-family="Arial" font-size="18" fill="%238b949e" text-anchor="middle" dominant-baseline="middle">Sin imagen</text></svg>`;
+
+    const movieEl = document.createElement('div');
+    movieEl.classList.add('movie-card');
+    movieEl.innerHTML = `
+      <div class="movie-poster">
+        <img src="${imageUrl}" alt="${movie.title}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;300&quot; height=&quot;450&quot; viewBox=&quot;0 0 300 450&quot;><rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;%2321262d&quot;/><text x=&quot;50%&quot; y=&quot;50%&quot; font-family=&quot;Arial&quot; font-size=&quot;18&quot; fill=&quot;%238b949e&quot; text-anchor=&quot;middle&quot; dominant-baseline=&quot;middle&quot;>Sin imagen</text></svg>';">
+      </div>
+      <div class="movie-info">
+        <h3 class="movie-title">${movie.title}</h3>
+        <div class="movie-details">
+          <span class="movie-year">${movie.year || 'Año desconocido'}</span>
+          <span class="movie-genre">${movie.genre || 'Sin género'}</span>
+        </div>
+        ${movie.director ? `<p class="movie-director">Director: ${movie.director}</p>` : ''}
+        <div class="movie-actions">
+          ${isOwner ? `<button class="action-btn edit-btn" data-movie-id="${movie._id}"><i class="fas fa-pencil"></i> Editar</button>` : ''}
+          ${isUserAdmin ? `<button class="action-btn delete-btn" data-movie-id="${movie._id}"><i class="fas fa-trash"></i> Eliminar</button>` : ''}
+        </div>
+      </div>
+    `;
+    fragment.appendChild(movieEl);
+  });
+  moviesGrid.appendChild(fragment);
+}
+
+function renderPagination(totalItems, itemsPerPage, currentPage) {
+  if (!paginationContainer) return;
+  paginationContainer.innerHTML = '';
+
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const button = document.createElement('button');
+    button.textContent = i;
+    button.classList.add('pagination-button');
+    if (i === currentPage) {
+      button.classList.add('active');
+    }
+    button.addEventListener('click', () => {
+      currentPage = i;
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
       const moviesToShow = filteredMovies.slice(startIndex, endIndex);
-      
-      // Usar DocumentFragment para mejor rendimiento
-      const fragment = document.createDocumentFragment();
-      
-      moviesToShow.forEach(movie => {
-        // Crear URL de imagen de película (usando placeholder si no hay URL)
-        // Usar imagen predeterminada estática para evitar solicitudes innecesarias
-        const imageUrl = movie.imagenurll || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450"><rect width="100%" height="100%" fill="%2321262d"/><text x="50%" y="50%" font-family="Arial" font-size="18" fill="%238b949e" text-anchor="middle" dominant-baseline="middle">Sin imagen</text></svg>';
-        
-        const movieEl = document.createElement('div');
-        movieEl.classList.add('movie-card');
-        
-        movieEl.innerHTML = `
-          <div class="movie-poster">
-            <img src="${imageUrl}" alt="${movie.title}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"300\" height=\"450\" viewBox=\"0 0 300 450\"><rect width=\"100%\" height=\"100%\" fill=\"%2321262d\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"18\" fill=\"%238b949e\" text-anchor=\"middle\" dominant-baseline=\"middle\">Sin imagen</text></svg>';">
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">${movie.title}</h3>
-            <div class="movie-details">
-              <span class="movie-year">${movie.year || 'Año desconocido'}</span>
-              <span class="movie-genre">${movie.genre || 'Sin género'}</span>
-            </div>
-            ${movie.director ? `<p class="movie-director">Director: ${movie.director}</p>` : ''}
-          </div>
-        `;
-        
-        fragment.appendChild(movieEl);
-      });
-      
-      // Limpiar y añadir todos los elementos de una vez
-      moviesGrid.innerHTML = '';
-      moviesGrid.appendChild(fragment);
+      renderMovies(moviesToShow);
+      updateActivePaginationButton();
+    });
+    paginationContainer.appendChild(button);
+  }
+}
+
+function updateActivePaginationButton() {
+  const buttons = document.querySelectorAll('.pagination-button');
+  buttons.forEach(button => {
+    button.classList.remove('active');
+    if (parseInt(button.textContent) === currentPage) {
+      button.classList.add('active');
     }
-    
-    // Renderizar paginación
-    function renderPagination() {
-      const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
-      paginationContainer.innerHTML = '';
-      
-      if (totalPages <= 1) return;
-      
-      // Botón anterior
-      const prevButton = document.createElement('button');
-      prevButton.innerHTML = '&laquo; Anterior';
-      prevButton.disabled = currentPage === 1;
-      prevButton.addEventListener('click', () => {
-        if (currentPage > 1) {
-          currentPage--;
-          renderMovies();
-          renderPagination();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
-      paginationContainer.appendChild(prevButton);
-      
-      // Botones de página
-      const maxPageButtons = 5;
-      let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
-      let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
-      
-      if (endPage - startPage + 1 < maxPageButtons) {
-        startPage = Math.max(1, endPage - maxPageButtons + 1);
+  });
+}
+
+function filterMovies(searchTerm) {
+  currentPage = 1;
+  filteredMovies = allMovies.filter(movie =>
+    movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (movie.director && movie.director.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (movie.actors && movie.actors.some(actor => actor.toLowerCase().includes(searchTerm.toLowerCase())))
+  );
+  const startIndex = (currentPage - 1) * moviesPerPage;
+  const endIndex = startIndex + moviesPerPage;
+  const moviesToShow = filteredMovies.slice(startIndex, endIndex);
+  renderMovies(moviesToShow);
+  renderPagination(filteredMovies.length, moviesPerPage, currentPage);
+}
+
+function handleEditMovie(movieId) {
+  const loggedInUserId = getLoggedInUserId();
+
+  fetch(`http://localhost:3000/api/movies/${movieId}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
-      for (let i = startPage; i <= endPage; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        pageButton.classList.toggle('active', i === currentPage);
-        pageButton.addEventListener('click', () => {
-          currentPage = i;
-          renderMovies();
-          renderPagination();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        paginationContainer.appendChild(pageButton);
-      }
-      
-      // Botón siguiente
-      const nextButton = document.createElement('button');
-      nextButton.innerHTML = 'Siguiente &raquo;';
-      nextButton.disabled = currentPage === totalPages;
-      nextButton.addEventListener('click', () => {
-        if (currentPage < totalPages) {
-          currentPage++;
-          renderMovies();
-          renderPagination();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+      return response.json();
+    })
+    .then(movieData => {
+      if (movieData.userId === loggedInUserId) {
+        console.log('El usuario tiene permiso para editar la película con ID:', movieId);
+        populateEditForm(movieData);
+        openEditModal();
+        // Adjuntar el event listener al formulario *después* de que el modal se abra
+        const editForm = document.getElementById('movieForm');
+        if (editForm) {
+          editForm.removeEventListener('submit', saveEditedMovie);
+          editForm.addEventListener('submit', saveEditedMovie);
         }
-      });
-      paginationContainer.appendChild(nextButton);
-    }
-    
-    // Buscar películas
-    function searchMovies(query) {
-      query = query.toLowerCase().trim();
-      
-      if (query === '') {
-        filteredMovies = [...allMovies];
       } else {
-        filteredMovies = allMovies.filter(movie => {
-          return (
-            (movie.title && movie.title.toLowerCase().includes(query)) ||
-            (movie.director && movie.director.toLowerCase().includes(query)) ||
-            (movie.genre && movie.genre.toLowerCase().includes(query)) ||
-            (movie.year && movie.year.toString().includes(query))
-          );
-        });
+        console.log('El usuario no tiene permiso para editar esta película.');
+        showAlert('No tienes permiso para editar esta película.', 'warning');
       }
-      
-      currentPage = 1;
+    })
+    .catch(error => {
+      console.error('Error al obtener los detalles de la película:', error);
+      showAlert('Error al cargar los detalles de la película.', 'error');
+    });
+}
+
+function showAlert(message, type) {
+  const alertBox = document.createElement('div');
+  alertBox.className = `alert ${type}`;
+  alertBox.textContent = message;
+  document.body.appendChild(alertBox);
+  setTimeout(() => {
+    alertBox.remove();
+  }, 3000);
+}
+
+function populateEditForm(movieData) {
+  document.getElementById('movieId').value = movieData._id || '';
+  document.getElementById('movieTitle').value = movieData.title || '';
+  document.getElementById('movieYear').value = movieData.year || '';
+  document.getElementById('movieDirector').value = movieData.director || '';
+  document.getElementById('movieDescription').value = movieData.description || '';
+  document.getElementById('movieGenre').value = movieData.genre || '';
+  document.getElementById('movieRating').value = movieData.rating || '';
+  document.getElementById('movieDuration').value = movieData.duration || '';
+  document.getElementById('movieLanguage').value = movieData.language || '';
+  document.getElementById('movieCountry').value = movieData.country || '';
+  document.getElementById('movieActors').value = (movieData.cast && movieData.cast.join(', ')) || ''; // Usando 'cast' del backend
+}
+
+function openEditModal() {
+  const modal = document.getElementById('movieModal');
+  const modalTitle = document.getElementById('modalTitle');
+  modalTitle.textContent = 'Editar Película';
+  modal.style.display = 'block'; // O cualquier otro método para mostrar tu modal (e.g., cambiar clases CSS)
+}
+function saveEditedMovie(event) {
+  event.preventDefault();
+
+  const movieIdElement = document.getElementById('movieId');
+  if (!movieIdElement) {
+    console.error("Error: El elemento con ID 'movieId' no se encontró en el formulario.");
+    return; // Detener la función si el elemento no existe
+  }
+  const movieId = movieIdElement.value || '';
+
+  const title = document.getElementById('movieTitle')?.value || '';
+  const year = parseInt(document.getElementById('movieYear')?.value || '0');
+  const director = document.getElementById('movieDirector')?.value || '';
+  const description = document.getElementById('movieDescription')?.value || '';
+  const genre = document.getElementById('movieGenre')?.value || '';
+  const rating = parseFloat(document.getElementById('movieRating')?.value || '0');
+  const duration = parseInt(document.getElementById('movieDuration')?.value || '0');
+  const language = document.getElementById('movieLanguage')?.value || '';
+  const country = document.getElementById('movieCountry')?.value || '';
+  const actorsInputValue = document.getElementById('movieActors')?.value || '';
+  const cast = actorsInputValue.split(',').map(actor => actor.trim());
+
+  const updatedMovieData = {
+    title: title,
+    year: year,
+    director: director,
+    description: description,
+    genre: genre,
+    rating: rating,
+    duration: duration,
+    language: language,
+    country: country,
+    cast: cast,
+  };
+console.log("Datos a enviar para actualizar:", updatedMovieData);
+  console.log("Título:", updatedMovieData.title);
+  console.log("Año:", updatedMovieData.year);
+  console.log("Director:", updatedMovieData.director);
+  console.log("Descripción:", updatedMovieData.description);
+  console.log("Género:", updatedMovieData.genre);
+  console.log("Calificación:", updatedMovieData.rating);
+  console.log("Duración:", updatedMovieData.duration);
+  console.log("Idioma:", updatedMovieData.language);
+  console.log("País:", updatedMovieData.country);
+  console.log("Cast:", updatedMovieData.cast);
+  console.log("Imagen URL:", updatedMovieData.imagenurll);
+  console.log("Datos a enviar para actualizar:", updatedMovieData);
+
+  fetch(`http://localhost:3000/api/movies/actualizar/${movieId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('Token')}`
+    },
+    body: JSON.stringify(updatedMovieData),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Película actualizada:', data);
+    showAlert('Película actualizada correctamente.', 'success');
+    closeEditModal();
+    fetchMovies();
+  })
+  .catch(error => {
+    console.error('Error al actualizar la película:', error);
+    showAlert('Error al actualizar la película.', 'error');
+  });
+}
+
+
+// Event listener para los botones "Editar" (ya lo tienes)
+document.addEventListener('click', function(event) {
+  if (event.target.classList.contains('edit-btn')) {
+    const movieId = event.target.dataset.movieId;
+    handleEditMovie(movieId);
+  }
+  // ... tu otro event listener para eliminar ...
+});
+
+function handleDeleteMovie(movieId) {
+  console.log('Eliminar película con ID:', movieId);
+  fetch(`/api/movies/${movieId}`, {
+    method: 'DELETE',
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Película eliminada:', data);
+    fetchMovies(); // Recargar las películas después de eliminar
+  })
+  .catch(error => {
+    console.error('Error al eliminar la película:', error);
+    // Aquí puedes mostrar un mensaje de error al usuario
+  });
+}
+
+if (searchForm) {
+  searchForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    filterMovies(searchInput.value);
+  });
+}
+
+document.addEventListener('click', function(event) {
+  if (event.target.classList.contains('edit-btn')) {
+    const movieId = event.target.dataset.movieId;
+    handleEditMovie(movieId);
+  } else if (event.target.classList.contains('delete-btn')) {
+    const movieId = event.target.dataset.movieId;
+    handleDeleteMovie(movieId);
+  } else if (event.target.classList.contains('pagination-button')) {
+    // La lógica de paginación ya está manejada directamente en el listener de los botones de paginación
+  }
+});
+
+// Llamar a fetchMovies al cargar la página
+fetchMovies();
+
+
+function updateActivePaginationButton() {
+  const buttons = document.querySelectorAll('.pagination-button');
+  buttons.forEach(button => {
+    button.classList.remove('active');
+    if (parseInt(button.textContent) === currentPage) {
+      button.classList.add('active');
+    }
+  });
+}
+
+function filterMovies(searchTerm) {
+  currentPage = 1;
+  filteredMovies = allMovies.filter(movie =>
+    movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (movie.director && movie.director.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (movie.actors && movie.actors.some(actor => actor.toLowerCase().includes(searchTerm.toLowerCase())))
+  );
+  const startIndex = (currentPage - 1) * moviesPerPage;
+  const endIndex = startIndex + moviesPerPage;
+  const moviesToShow = filteredMovies.slice(startIndex, endIndex);
+  renderMovies(moviesToShow);
+  renderPagination(filteredMovies.length, moviesPerPage, currentPage);
+}
+
+
+
+// Event listener para los botones de editar y eliminar (delegación de eventos)
+document.addEventListener('click', function(event) {
+  if (event.target.classList.contains('edit-btn')) {
+    const movieId = event.target.dataset.movieId;
+    handleEditMovie(movieId); // Asegúrate de que esta función esté definida
+  } else if (event.target.classList.contains('delete-btn')) {
+    const movieId = event.target.dataset.movieId;
+    handleDeleteMovie(movieId); // Asegúrate de que esta función esté definida
+  }
+});
+
+// Llamar a fetchMovies al cargar la página
+fetchMovies();
+
+
+function decodeJwt(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+}
+// Ejemplo de una función de decodificación JWT (necesitarías incluir una librería como jwt-decode)
+function decodeJwt(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+}
+// Renderizar paginación
+function renderPagination() {
+  const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
+  paginationContainer.innerHTML = '';
+
+  if (totalPages <= 1) return;
+
+  const prevButton = document.createElement('button');
+  prevButton.innerHTML = '&laquo; Anterior';
+  prevButton.disabled = currentPage === 1;
+  prevButton.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
       renderMovies();
       renderPagination();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    
-    // Debounce function para evitar múltiples búsquedas
-    function debounce(func, wait) {
-      let timeout;
-      return function(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-      };
+  });
+  paginationContainer.appendChild(prevButton);
+
+  const maxPageButtons = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+  let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+  if (endPage - startPage + 1 < maxPageButtons) {
+    startPage = Math.max(1, endPage - maxPageButtons + 1);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    const pageButton = document.createElement('button');
+    pageButton.textContent = i;
+    pageButton.classList.toggle('active', i === currentPage);
+    pageButton.addEventListener('click', () => {
+      currentPage = i;
+      renderMovies();
+      renderPagination();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    paginationContainer.appendChild(pageButton);
+  }
+
+  const nextButton = document.createElement('button');
+  nextButton.innerHTML = 'Siguiente &raquo;';
+  nextButton.disabled = currentPage === totalPages;
+  nextButton.addEventListener('click', () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderMovies();
+      renderPagination();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    
-    // Event listeners
-    searchButton.addEventListener('click', () => {
-      searchMovies(searchInput.value);
+  });
+  paginationContainer.appendChild(nextButton);
+}
+
+// Buscar películas
+function searchMovies(query) {
+  query = query.toLowerCase().trim();
+
+  if (query === '') {
+    filteredMovies = [...allMovies];
+  } else {
+    filteredMovies = allMovies.filter(movie => {
+      return (
+        (movie.title && movie.title.toLowerCase().includes(query)) ||
+        (movie.director && movie.director.toLowerCase().includes(query)) ||
+        (movie.genre && movie.genre.toLowerCase().includes(query)) ||
+        (movie.year && movie.year.toString().includes(query))
+      );
     });
-    
-    // Uso de debounce para la búsqueda mientras se escribe
-    const debouncedSearch = debounce((query) => {
-      searchMovies(query);
-    }, 500);
-    
-    searchInput.addEventListener('input', (e) => {
-      debouncedSearch(e.target.value);
+  }
+
+  currentPage = 1;
+  renderMovies();
+  renderPagination();
+}
+
+// Debounce function para evitar múltiples búsquedas
+const debouncedSearch = debounce((query) => {
+  searchMovies(query);
+}, 500);
+
+// Event listeners para la búsqueda
+searchButton.addEventListener('click', () => {
+  searchMovies(searchInput.value);
+});
+
+searchInput.addEventListener('input', (e) => {
+  debouncedSearch(e.target.value);
+});
+
+searchInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    searchMovies(searchInput.value);
+  }
+});
+movieForm.addEventListener('submit', async (event) => {
+  event.preventDefault(); // Evitar la recarga de la página
+
+  // Obtener los valores del formulario
+
+  const title = document.getElementById('movieTitle').value;
+  const year = document.getElementById('movieYear').value;
+  const director = document.getElementById('movieDirector').value; // Obtener el valor del director
+  const actors = document.getElementById('movieActors').value;   // Obtener el valor de los actores
+  const imageUrl = document.getElementById('moviePoster').value;
+  const description = document.getElementById('movieDescription').value
+  const authToken = localStorage.getItem('Token');
+  console.log('Token en la página de películas (authToken - DOMContentLoaded):', authToken);
+  if (!authToken) {
+    console.error('Token de autenticación no encontrado. El usuario debe iniciar sesión.');
+    // TODO: Mostrar mensaje al usuario: "Debes iniciar sesión para agregar películas."
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/api/movies/agregarpelicula', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}` // Incluir el token en el encabezado Authorization
+      },
+      body: JSON.stringify({
+        title: title,
+        year: parseInt(year),
+        director: director,       // Incluir el director
+        actors: actors.split(','), // Incluir los actores (separados en un array)
+        imagenurll: imageUrl,
+        description: description
+      })
     });
-    
-    searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        searchMovies(searchInput.value);
-      }
-    });
-    
-    // Iniciar la aplicación - usar un flag para evitar cargas múltiples
-    let appInitialized = false;
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      if (!appInitialized) {
-        fetchMovies();
-        appInitialized = true;
-      }
-    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error al agregar la película:', errorData);
+      return;
+    }
+
+    const responseData = await response.json();
+    console.log('Película agregada con éxito:', responseData);
+
+    localStorage.removeItem('cachedMovies');
+    localStorage.removeItem('cachedTimestamp');
+
+    closeMovieModal();
+    fetchMovies();
+  } catch (error) {
+    console.error('Error de red al agregar la película:', error);
+
+  }
+});
+
+fetchMovies();
   </script>
 </body>
 </html>
